@@ -1,0 +1,14 @@
+.my-recipes-page{
+    width: 100%;
+    min-height: calc(100vh - 150px);
+    padding: 0 120px;
+    margin: auto;
+    max-width: 1440px;
+}
+
+@media screen and (max-width: 1200px) {
+    .my-recipes-page{
+        padding: 0 32px;
+    }
+    
+}

@@ -1,0 +1,13 @@
+.explore-recipes {
+  width: 100%;
+  min-height: calc(100vh - 150px);
+  padding: 0 120px;
+  max-width: 1440px;
+  margin: auto;
+}
+
+@media screen and (max-width: 1200px) {
+  .explore-recipes {
+    padding: 0 32px;
+  }
+}

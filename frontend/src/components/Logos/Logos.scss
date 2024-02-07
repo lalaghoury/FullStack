@@ -1,0 +1,22 @@
+.logos-container {
+  width: 100%;
+  height: 200px;
+  padding: 0 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 45px;
+}
+
+@media screen and (max-width: 1200px) {
+  .logos-container {
+    padding: 0 32px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .logos-container {
+    display: none;
+  }
+  
+}

@@ -1,0 +1,12 @@
+.trending-recipe-container {
+  width: 100%;
+  padding: 0 120px;
+  max-width: 1440px;
+  margin: auto; 
+}
+
+@media screen and (max-width: 1200px) {
+  .trending-recipe-container {
+    padding: 0 32px;
+  }
+}

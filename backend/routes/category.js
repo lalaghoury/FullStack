@@ -7,7 +7,6 @@ router.get("/", async (req, res) => {
   try {
     const categories = await CategoryModel.find()
       .populate("recipes")
-      .populate("user")
       .populate("blogs");
     res.status(200).json(categories);
   } catch (error) {
@@ -29,13 +28,12 @@ router.post("/", async (req, res) => {
 router.get("/:categoryID", async (req, res) => {
   try {
     const category = await CategoryModel.findById(req.params.categoryID)
-      .populate("user")
       .populate("blogs")
       .populate({
         path: "recipes",
         populate: {
           path: "user",
-          select: "username userimage", // Select the fields you want to retrieve
+          select: "username userimage", 
         },
       })
       .exec();

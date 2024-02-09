@@ -39,7 +39,8 @@ router.get("/", async (req, res) => {
   try {
     const recipes = await RecipeModel.find()
       .populate("user")
-      .populate("category");
+      .populate("category")
+      .populate("comments");
     res.status(200).json(recipes);
   } catch (error) {
     console.error(error);
@@ -53,7 +54,8 @@ router.get("/:recipeID", async (req, res) => {
   try {
     const recipe = await RecipeModel.findById(recipeID)
       .populate("user")
-      .populate("category");
+      .populate("category")
+      .populate("comments");
     if (!recipe) {
       return res.status(404).send("Recipe not found");
     }

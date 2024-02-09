@@ -1,23 +1,29 @@
-// Import the mongoose library
 const mongoose = require("mongoose");
-
-// Destructure the Schema object from mongoose
 const { Schema } = mongoose;
 
-// Define a Mongoose schema for the 'Blog' model
 const blogSchema = new Schema({
-  image: String,
-  title: String,
-  slogan: String,
-  content: String,
-  description: String,
+  image: { type: String, required: [true, "Blog image is required"] },
+  title: { type: String, required: [true, "Blog title is required"] },
+  slogan: { type: String, required: [true, "Blog slogan is required"] },
+  content: { type: String, required: [true, "Blog content is required"] },
+  description: {
+    type: String,
+    required: [true, "Blog description is required"],
+  },
   date: { type: Date, default: Date.now },
-  user: { type: Schema.Types.ObjectId, ref: "User" },
-  category: { type: Schema.Types.ObjectId, ref: "Category" },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: [true, "User reference is required"],
+  },
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: "Category",
+    required: [true, "Category reference is required"],
+  },
+  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 });
 
-// Create a Mongoose model for the 'Blog' schema
 const BlogModel = mongoose.model("Blog", blogSchema);
 
-// Export both models for use in other files
 module.exports = BlogModel;

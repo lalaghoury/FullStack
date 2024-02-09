@@ -1,68 +1,58 @@
-import React, { useEffect, useState } from "react";
-import "../RecipesCard/RecipesCard.scss";
-import { FireOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import { Flex, Rate } from "antd";
-import WishlistButton from "../RecipesCard/WishlistButton";
-import { useFunctions } from "../../context/FunctionsSupply";
+import React, { useEffect, useState } from 'react';
+import './Test.scss';
+import { Button, Form, Input } from 'antd';
+import axios from 'axios';
 
 function Test() {
-  const { getAllRecipes } = useFunctions();
-  const [allRecipes, setAllRecipes] = useState([]);
+  const [form] = Form.useForm();
+  const user = localStorage.getItem('userId');
+  const [blogs, setBlogs] = useState([]);
+
   useEffect(() => {
-    getAllRecipes()
-      .then((data) => setAllRecipes(data))
-      .catch((error) => console.log(error));
+    axios.get('http://localhost:5000/blog')
+      .then((response) => {
+        setBlogs(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the blogs:", error);
+      });
   }, []);
-  const [cardRatings, setCardRatings] = useState({});
-  const desc = ['Terrible', 'Bad', 'Normal', 'Good', 'Wonderful'];
-  const handleRatingChange = (value, recipe_id) => {
-    setCardRatings((prevRatings) => ({ ...prevRatings, [recipe_id]: value }));
+
+
+  const onFinish = async (values) => {
+    if (blogs.length > 0) {
+      const commentData = await axios.post('http://localhost:5000/comments', { ...values, user, blog: blogs[0]._id });
+      console.log('Comment data to be submitted:', commentData);
+    } else {
+      console.warn('No blogs available to comment on.');
+    }
   };
-  useEffect(() => {
-    const initialRatings = {};
-    allRecipes.forEach((recipe) => {
-      initialRatings[recipe._id] = recipe.recipe_ratings;
-    });
-    setCardRatings(initialRatings);
-  }, [allRecipes]);
+
+  // console.log(userId, blogs[0]._id);
+
 
   return (
-    <div className="card-wrapper">
-      {allRecipes.map((recipe) =>
-        <div key={recipe._id} className="card">
-          <div className="card-parent">
-            <div className="card-parent-img">
-              <img src={recipe.recipe_imageurl} alt={recipe.recipe_title} className="card-image" />
-            </div>
-            <WishlistButton />
-            <div className="card-rating">
-              <Flex gap="middle" vertical >
-                <Rate
-                  style={{ fontSize: 22, color: "#B55D51" }}
-                  tooltips={desc}
-                  onChange={(value) => handleRatingChange(value, recipe._id)}
-                  value={cardRatings[recipe._id]}
-                />
-              </Flex>
-            </div>
-          </div>
-          <h3 className="font-16"><Link className="links-fix text-black" to={`/recipe/${recipe._id}`}>{recipe.recipe_title}</Link></h3>
-          <div className="card-user">
-            <span className="card-left">
-              <img src={recipe.userimage} alt="" />
-              <h4>{recipe.user.username}</h4>
-            </span>
-            <span className="card-right">
-              <FireOutlined style={{ color: "red" }} />
-              <h4>{recipe.firecount}</h4>
-            </span>
-          </div>
-        </div>
-      )
-      }
-    </div >
+    <div className="test">
+      <h1>test</h1>
+      <div className="container">
+        <Form
+          form={form}
+          onFinish={onFinish}
+        >
+          <Form.Item
+            name='comment'
+            rules={[{ required: true, message: 'Please enter your comment!' }]}
+          >
+            <Input placeholder='Enter Comment' />
+          </Form.Item>
+          <Form.Item>
+            <Button type='primary' htmlType='submit'>Submit</Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </div>
   );
 }
 
 export default Test;
+

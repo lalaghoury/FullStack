@@ -6,10 +6,7 @@ const UserModel = require("../schemas/UserSchema");
 // User GET all route
 router.get("/", async (req, res) => {
   try {
-    const users = await UserModel.find()
-      .populate("recipes")
-      .populate("categories")
-      .populate("blogs");
+    const users = await UserModel.find().populate("recipes").populate("blogs");
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
@@ -23,7 +20,8 @@ router.get("/:id", async (req, res) => {
     const user = await UserModel.findById(req.params.id)
       .populate("recipes")
       .populate("categories")
-      .populate("blogs");
+      .populate("blogs")
+      .populate("comments");
     res.status(200).json(user);
   } catch (error) {
     console.error(error);

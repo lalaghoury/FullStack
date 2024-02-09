@@ -61,6 +61,9 @@ app.use("/category", categoryRouter);
 const signoutRouter = require("./routes/signout");
 app.use("/signout", signoutRouter);
 
+//Comments Route
+const commentsRouter = require("./routes/comments");
+app.use("/comments", commentsRouter);
 
 ///////////////////////////////////////////////////////////////////////////////
 

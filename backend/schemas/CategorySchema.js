@@ -9,7 +9,7 @@ const categorySchema = new Schema({
   categoryname: String,
   categoryimage: String,
   recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
-  user: { type: Schema.Types.ObjectId, ref: "User" },
+  // user: { type: Schema.Types.ObjectId, ref: "User" },
   blogs: [{ type: Schema.Types.ObjectId, ref: "Blog" }],
 });
 

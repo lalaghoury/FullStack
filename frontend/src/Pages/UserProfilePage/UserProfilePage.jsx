@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import './UserProfilePage.scss'
 import { useFunctions } from '../../context/FunctionsSupply'
 import { useAccount } from '../../context/AccountContext';
@@ -12,10 +12,11 @@ function UserProfilePage() {
     axios.defaults.withCredentials = true;
     const [user, setUser] = useState({})
     const { getUser, } = useFunctions();
+    const { user_id } = useParams();
     const { handleUserActivity, handleSignout } = useAccount();
     useEffect(() => {
         handleUserActivity()
-        getUser().then((data) => setUser(data))
+        getUser(user_id).then((data) => setUser(data))
     }, [])
     console.log(user)
     return (

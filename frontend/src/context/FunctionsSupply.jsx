@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState } from "react";
 const FunctionSupplyContext = createContext();
 
 export const FunctionSupplyProvider = ({ children }) => {
+    const [comments, setComments] = useState([]);
 
     const getAllRecipes = async () => {
         try {
@@ -25,8 +26,7 @@ export const FunctionSupplyProvider = ({ children }) => {
         }
     }
 
-    const getUser = async () => {
-        const userId = localStorage.getItem('userId');
+    const getUser = async (userId) => {
         try {
             const response = await axios.get(`http://localhost:5000/user/${userId}`);
             const user = response.data;
@@ -56,8 +56,20 @@ export const FunctionSupplyProvider = ({ children }) => {
         }
     }
 
+    const getSingleBlog = async (blog_id) => {
+        try {
+            const response = await axios.get(`http://localhost:5000/blog/${blog_id}`);
+            const blog = response.data;
+            return blog;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+
     return (
-        <FunctionSupplyContext.Provider value={{ getAllBlogs, getSingleCategory, getAllRecipes, getAllCategories, getUser, }}>
+        <FunctionSupplyContext.Provider value={{ getAllBlogs, getSingleCategory, getAllRecipes, getAllCategories, getUser, getSingleBlog }}>
             {children}
         </FunctionSupplyContext.Provider >
     );

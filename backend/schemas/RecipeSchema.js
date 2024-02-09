@@ -72,15 +72,10 @@ const recipeSchema = new Schema({
       return formattedDate;
     },
   },
-  comments: {
-    type: Number,
-    default: getRandomNumber,
-  },
   saves: {
     type: Number,
     default: getRandomNumber,
   },
-
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -89,6 +84,12 @@ const recipeSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Category",
   },
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
 });
 
 // Create a Mongoose model for the 'Recipe' schema

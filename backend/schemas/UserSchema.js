@@ -18,6 +18,7 @@ const userSchema = new Schema({
   recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
   categories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
   blogs: [{ type: Schema.Types.ObjectId, ref: "Blog" }],
+  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 });
 
 const userModel = mongoose.model("User", userSchema);

@@ -10,7 +10,6 @@ import Categories from "../../components/Categories/Categories";
 import Logos from "../../components/Logos/Logos";
 import axios from "axios";
 import { message } from "antd";
-import { useNavigate } from "react-router-dom";
 import { useAccount } from "../../context/AccountContext";
 
 function Homepage() {
@@ -29,7 +28,7 @@ function Homepage() {
       <Herosection />
       <NewRecipe />
       <TrendingRecipe />
-      <Blog />
+      <Blog slice={2} />
       <ExploreRecipes />
       <StayInTouch />
       <Categories />

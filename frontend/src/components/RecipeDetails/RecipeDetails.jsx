@@ -5,6 +5,7 @@ import RecipeRating from "./RecipeRating";
 import { Breadcrumb, Button, Card, Flex } from "antd";
 import { CalendarOutlined, CommentOutlined, HeartOutlined } from "@ant-design/icons";
 import { useFunctions } from "../../context/FunctionsSupply";
+import CommentsSection from "../CommentsSection/CommentsSection";
 
 const RecipeDetails = () => {
     const { getAllRecipes } = useFunctions();
@@ -130,8 +131,11 @@ const RecipeDetails = () => {
                             </ol>
                         </div>
                     </div>
+                    <div className="recipe-comments">
+                        <CommentsSection Id={recipe_id} />
+                    </div>
                 </div>
-                -                  <div className="body-right">
+                <div className="body-right">
                     <div className="body-right-facts">
                         <h1>Nutrition Facts</h1>
                         <span><span>Calories</span> {recipe.recipe_calories} mg</span> <hr />

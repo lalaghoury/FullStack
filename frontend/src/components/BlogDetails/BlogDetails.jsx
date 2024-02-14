@@ -4,7 +4,7 @@ import { useFunctions } from '../../context/FunctionsSupply';
 import { Breadcrumb, Button, Card } from 'antd';
 import { Link, useParams } from 'react-router-dom';
 import { CalendarOutlined, CommentOutlined } from '@ant-design/icons';
-import PostList from '../../PostList';
+import CommentsSection from '../CommentsSection/CommentsSection';
 
 function BlogDetails() {
   const { blog_id } = useParams();
@@ -15,13 +15,21 @@ function BlogDetails() {
 
   useEffect(() => {
     setLoading(true);
-    getAllBlogs().then(data => setAllBlogs(data)).catch(error => console.error(error)).finally(() => setLoading(false));
-    getSingleBlog(blog_id).then(data => setBlog(data)).catch(error => console.error(error));
+    getAllBlogs()
+      .then(data => setAllBlogs(data))
+      .catch(error => console.error(error))
+    getSingleBlog(blog_id)
+      .then(data => setBlog(data))
+      .catch(error => console.error(error))
+      .finally(() => setLoading(false));
+
   }, [blog_id, getAllBlogs]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  console.log(blog)
 
   if (!blog) {
     return <div>Blog not found</div>;
@@ -54,7 +62,7 @@ function BlogDetails() {
         </div>
         <div className="blog-details-heading" style={{ display: 'flex', gap: 15, alignItems: 'center' }}>
           <h1>{blog.title}</h1>
-          <p><i>{blog.slogan}</i></p>
+          <p id="slogan"><i>{blog.slogan}</i></p>
         </div>
         <div className="blog-details-user">
           <span className="blog-details-user-card">
@@ -87,7 +95,7 @@ function BlogDetails() {
             </div>
           </div>
           <div className="blog-comments">
-            <PostList blog_id={blog._id} />
+            <CommentsSection Id={blog_id} />
           </div>
         </div>
         <div className="blog-right">

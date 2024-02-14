@@ -25,6 +25,7 @@ export const AccountProvider = ({ children }) => {
         try {
             const response = await axios.post('http://localhost:5000/login', values);
             const data = response.data;
+            console.log(`abc1`, data)
             if (data.success) {
                 localStorage.setItem("userId", data.userId);
                 localStorage.setItem("loggedIn", true);
@@ -53,7 +54,7 @@ export const AccountProvider = ({ children }) => {
 
     const handleUserActivity = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/");
+            const response = await axios.get("http://localhost:5000/verify");
             if (response.data.success) {
                 console.log(`User is verified`);
                 const formattedUsername = response.data.username.charAt(0).toUpperCase() + response.data.username.slice(1);

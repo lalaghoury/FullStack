@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { FireOutlined } from '@ant-design/icons';
 import { Rate } from 'antd';
 
-function MyRecipesPage() {
+const MyRecipesPage = () => {
     const { getUser } = useFunctions();
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState(null);
@@ -16,23 +16,28 @@ function MyRecipesPage() {
 
     useEffect(() => {
         setLoading(true);
-        const data = getUser(userId).then(data => setUser(data)).catch(error => console.error(error)).finally(() => setLoading(false));
-        const initialRatings = data.recipes?.reduce((ratings, recipe) => {
-            ratings[recipe._id] = recipe.recipe_ratings || 0;
-            return ratings;
-        }, {});
-        setCardRatings(initialRatings);
-    }, [getUser]);
+        getUser(userId)
+            .then(data => {
+                setUser(data);
+                const initialRatings = data.recipes?.reduce((ratings, recipe) => {
+                    ratings[recipe._id] = recipe.recipe_ratings || 0;
+                    return ratings;
+                }, {});
+                setCardRatings(initialRatings);
+            })
+            .catch(error => console.error(error))
+            .finally(() => setLoading(false));
+    }, [getUser, userId]);
 
     const handleRatingChange = useCallback((value, recipeId) => {
-        if (Number.isInteger(value) && value >= 0 && value <= desc.length) {
+        if (Number.isInteger(value) && value >= 0 && value < desc.length) {
             setCardRatings(prevRatings => ({ ...prevRatings, [recipeId]: value }));
         } else {
             console.error("Invalid rating value:", value);
         }
     }, [desc.length]);
 
-    console.log(user)
+    console.log(user);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -92,4 +97,3 @@ function MyRecipesPage() {
 }
 
 export default MyRecipesPage;
-

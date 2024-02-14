@@ -22,7 +22,7 @@ function CategoryDetails() {
             setAllCategories(res);
             const singleCategory = await getSingleCategory(category_id);
             setCategory(singleCategory);
-            const initialRatings = data.recipes.reduce((ratings, recipe) => {
+            const initialRatings = category.recipes.reduce((ratings, recipe) => {
                 ratings[recipe._id] = recipe.recipe_ratings || 0;
                 return ratings;
             }, {});

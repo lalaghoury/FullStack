@@ -4,28 +4,26 @@ import { Link } from "react-router-dom";
 import { Breadcrumb } from "antd";
 import { useFunctions } from "../../context/FunctionsSupply";
 
-const NavBlog = () => (
-  <div className="breadcrumb">
-    <Breadcrumb
-      separator=">"
-      items={[
-        {
-          title: "Home",
-          href: "/",
-          className: "bold",
-        },
-        {
-          title: "Blog",
-          href: "/blog",
-          className: "bold text-primary",
-        },
-      ]}
-    />
-  </div>
-);
 
 const BlogHeading = () => (
   <div className="common-heading">
+    <div className="breadcrumb">
+      <Breadcrumb
+        separator=">"
+        items={[
+          {
+            title: "Home",
+            href: "/",
+            className: "bold",
+          },
+          {
+            title: "Blog",
+            href: "/blog",
+            className: "bold text-primary",
+          },
+        ]}
+      />
+    </div>
     <h1 className="text-black font-48">Blog</h1>
     <span className="text-primary">
       <Link to="/blog" className="text-primary links-fix">View more</Link>
@@ -72,5 +70,5 @@ function Blog({ slice }) {
   );
 }
 
-export { Blog, NavBlog, BlogHeading };
+export { Blog, BlogHeading };
 

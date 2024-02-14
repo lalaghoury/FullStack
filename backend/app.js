@@ -26,7 +26,7 @@ useBodyParser(app);
 ///////////////////////////////////////////////////////////////////////////////
 
 // Home Route
-const homeRouter = require("./routes/home");
+const homeRouter = require("./routes/verify");
 app.use("/", homeRouter);
 
 // Recipe Route
@@ -62,7 +62,7 @@ const signoutRouter = require("./routes/signout");
 app.use("/signout", signoutRouter);
 
 //Comments Route
-const commentsRouter = require("./routes/comments");
+const commentsRouter = require("./routes/comment");
 app.use("/comments", commentsRouter);
 
 ///////////////////////////////////////////////////////////////////////////////

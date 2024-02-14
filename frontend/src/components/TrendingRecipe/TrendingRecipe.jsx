@@ -3,7 +3,7 @@ import "./TrendingRecipe.scss";
 import { Link } from "react-router-dom";
 import RecipesCard from "../RecipesCard/RecipesCard";
 
-function TrendingRecipe() {
+function TrendingRecipe({ slice }) {
   return (
     <div>
       <div className="trending-recipe-container">
@@ -12,7 +12,7 @@ function TrendingRecipe() {
           <span className="text-primary"><Link to="/recipe" className="text-primary links-fix">View more</Link></span>
         </div>
 
-        <RecipesCard />
+        <RecipesCard slice={slice} />
       </div>
     </div>
   );

@@ -27,9 +27,9 @@ function Homepage() {
     <div>
       <Herosection />
       <NewRecipe />
-      <TrendingRecipe />
+      <TrendingRecipe slice={6} />
       <Blog slice={2} />
-      <ExploreRecipes />
+      <ExploreRecipes slice={6} />
       <StayInTouch />
       <Categories />
       <Logos />

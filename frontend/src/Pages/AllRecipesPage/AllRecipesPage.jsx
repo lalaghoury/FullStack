@@ -5,7 +5,7 @@ import Recipes from "../../components/Recipes/Recipes";
 function AllRecipesPage() {
   return <div className="all-recipes-page">
     
-    <Recipes />
+    <Recipes slice={0} />
   </div>;
 }
 

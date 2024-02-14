@@ -53,7 +53,7 @@ const RecipeDetails = () => {
                             },
                             {
                                 title: 'Recipes',
-                                href: '/recipes',
+                                href: '/recipe',
                                 className: 'bold',
                             },
                             {
@@ -132,7 +132,7 @@ const RecipeDetails = () => {
                         </div>
                     </div>
                     <div className="recipe-comments">
-                        <CommentsSection Id={recipe_id} />
+                        <CommentsSection Id={recipe_id} used={"RecipeSchema"} />
                     </div>
                 </div>
                 <div className="body-right">

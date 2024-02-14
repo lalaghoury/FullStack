@@ -17,9 +17,7 @@ router.post("/", async (req, res) => {
     if (!isValidPassword) {
       return res.status(401).json({ error: "Invalid password" });
     }
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY);
     res.cookie("token", token, { httpOnly: true });
     res.json({
       success: "Login successful",

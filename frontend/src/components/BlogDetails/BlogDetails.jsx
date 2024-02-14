@@ -95,7 +95,7 @@ function BlogDetails() {
             </div>
           </div>
           <div className="blog-comments">
-            <CommentsSection Id={blog_id} />
+            <CommentsSection Id={blog_id} used={"BlogModel"} />
           </div>
         </div>
         <div className="blog-right">

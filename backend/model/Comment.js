@@ -6,9 +6,10 @@ const commentSchema = new mongoose.Schema({
     ref: "Blog",
   },
   author: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
     trim: true,
+    ref: "User",
   },
   content: {
     type: String,
@@ -20,7 +21,7 @@ const commentSchema = new mongoose.Schema({
   },
   updatedAt: {
     type: Date,
-    default: Date.now,
+    default: null,
   },
   replies: [
     {

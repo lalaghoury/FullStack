@@ -1,29 +1,41 @@
 const Comment = require("../model/Comment");
 const BlogModel = require("../schemas/BlogSchema");
+const recipeSchema = require("../schemas/RecipeSchema");
 
 const populateReplies = async (comment) => {
-  await comment.populate("replies");
-  for (const reply of comment.replies) {
-    await populateReplies(reply);
+  try {
+    await comment.populate("replies");
+    await comment.populate({
+      path: "author",
+      select: "username userimage _id",
+    });
+    for (const reply of comment.replies) {
+      await populateReplies(reply);
+    }
+  } catch (error) {
+    console.error("Error populating replies:", error);
+    throw error; // Rethrow the error to handle it further up the call stack, if necessary.
   }
 };
 
 const commentController = {
   createComment: async (req, res) => {
-    const { postId, author, content } = req.body;
+    const { postId, author, content, model } = req.body;
     const newComment = new Comment({
       postId,
       author,
       content,
     });
 
+    const Model = model === "BlogSchema" ? BlogModel : recipeSchema;
+    
     try {
       const savedComment = await newComment.save();
-      const updatedBlog = await BlogModel.findByIdAndUpdate(postId, {
+      await Model.findByIdAndUpdate(postId, {
         $push: { comments: savedComment._id },
       });
 
-      res.status(201).json({ savedComment, Blog: updatedBlog });
+      res.status(201).json(savedComment);
     } catch (error) {
       res.status(400).json({ message: error.message });
     }

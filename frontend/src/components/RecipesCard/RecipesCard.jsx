@@ -6,11 +6,12 @@ import { Rate } from "antd";
 import WishlistButton from "./WishlistButton";
 import { useFunctions } from "../../context/FunctionsSupply";
 
-function RecipesCard() {
+function RecipesCard({ slice }) {
   const { getAllRecipes } = useFunctions();
   const [allRecipes, setAllRecipes] = useState([]);
   const [cardRatings, setCardRatings] = useState({});
   const desc = ['Terrible', 'Bad', 'Normal', 'Good', 'Wonderful'];
+  console.log(slice)
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -39,37 +40,75 @@ function RecipesCard() {
 
   return (
     <div className="card-wrapper">
-      {allRecipes.map((recipe) => (
-        <div key={recipe._id} className="card">
-          <div className="card-parent">
-            <div className="card-parent-img">
-              <img src={recipe.recipe_imageurl} alt={recipe.recipe_title} className="card-image" />
+      {slice !== 0 ? (
+        <>
+          {allRecipes.slice(0, slice).map((recipe) => (
+            <div key={recipe._id} className="card">
+              <div className="card-parent">
+                <div className="card-parent-img">
+                  <img src={recipe.recipe_imageurl} alt={recipe.recipe_title} className="card-image" />
+                </div>
+                <WishlistButton />
+                <div className="card-rating">
+                  <Rate
+                    style={{ fontSize: 22, color: "#B55D51" }}
+                    tooltips={desc}
+                    onChange={(value) => handleRatingChange(value, recipe._id)}
+                    value={cardRatings[recipe._id] || 0}
+                  />
+                </div>
+              </div>
+              <h3 className="font-16">
+                <Link className="links-fix text-black" to={`/recipe/${recipe._id}`}>{recipe.recipe_title}</Link>
+              </h3>
+              <div className="card-user">
+                <span className="card-left">
+                  <img src={recipe.user.userimage} alt={recipe.user.username} />
+                  <h4><Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>{recipe.user.username}</Link></h4>
+                </span>
+                <span className="card-right">
+                  <FireOutlined style={{ color: "red" }} />
+                  <h4>{recipe.firecount}</h4>
+                </span>
+              </div>
             </div>
-            <WishlistButton />
-            <div className="card-rating">
-              <Rate
-                style={{ fontSize: 22, color: "#B55D51" }}
-                tooltips={desc}
-                onChange={(value) => handleRatingChange(value, recipe._id)}
-                value={cardRatings[recipe._id] || 0}
-              />
+          ))}
+        </>
+      ) : (
+        <>
+          {allRecipes.map((recipe) => (
+            <div key={recipe._id} className="card">
+              <div className="card-parent">
+                <div className="card-parent-img">
+                  <img src={recipe.recipe_imageurl} alt={recipe.recipe_title} className="card-image" />
+                </div>
+                <WishlistButton />
+                <div className="card-rating">
+                  <Rate
+                    style={{ fontSize: 22, color: "#B55D51" }}
+                    tooltips={desc}
+                    onChange={(value) => handleRatingChange(value, recipe._id)}
+                    value={cardRatings[recipe._id] || 0}
+                  />
+                </div>
+              </div>
+              <h3 className="font-16">
+                <Link className="links-fix text-black" to={`/recipe/${recipe._id}`}>{recipe.recipe_title}</Link>
+              </h3>
+              <div className="card-user">
+                <span className="card-left">
+                  <img src={recipe.user.userimage} alt={recipe.user.username} />
+                  <h4><Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>{recipe.user.username}</Link></h4>
+                </span>
+                <span className="card-right">
+                  <FireOutlined style={{ color: "red" }} />
+                  <h4>{recipe.firecount}</h4>
+                </span>
+              </div>
             </div>
-          </div>
-          <h3 className="font-16">
-            <Link className="links-fix text-black" to={`/recipe/${recipe._id}`}>{recipe.recipe_title}</Link>
-          </h3>
-          <div className="card-user">
-            <span className="card-left">
-              <img src={recipe.user.userimage} alt={recipe.user.username} />
-              <h4><Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>{recipe.user.username}</Link></h4>
-            </span>
-            <span className="card-right">
-              <FireOutlined style={{ color: "red" }} />
-              <h4>{recipe.firecount}</h4>
-            </span>
-          </div>
-        </div>
-      ))}
+          ))}
+        </>
+      )}
     </div>
   );
 }

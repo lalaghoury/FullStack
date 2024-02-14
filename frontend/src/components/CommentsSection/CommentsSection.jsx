@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Input, Button } from "antd";
+import { Button } from "antd";
 import Comments from "./Comments";
+import TextArea from "antd/es/input/TextArea";
 
-const CommentsSection = ({ Id }) => {
+const CommentsSection = ({ Id, used }) => {
     const [loading, setLoading] = useState(true);
     const [comments, setComments] = useState([]);
     const [commentBody, setCommentBody] = useState("");
-    const userId = localStorage.getItem("userId");      
+    const userId = localStorage.getItem("userId");
 
     const fetchData = async () => {
         try {
@@ -35,7 +36,8 @@ const CommentsSection = ({ Id }) => {
         let newComment = {
             content: commentBody,
             author: userId,
-            postId: Id
+            postId: Id,
+            model: used,
         };
         axios
             .post("http://localhost:5000/comments", newComment)
@@ -52,15 +54,19 @@ const CommentsSection = ({ Id }) => {
     if (loading) return <div>Loading...</div>;
 
     return (
-        <div className="App">
+        <div>
             <div className="comment-container">
-                <Input
+                <TextArea
                     type="text"
                     placeholder="Add a comment"
                     className="input"
-                    autoFocus
                     value={commentBody}
                     onChange={(e) => setCommentBody(e.target.value)}
+                    onPressEnter={handleAdd}
+                    style={{ marginBottom: 10 }}
+                    allowClear
+                    onClear={() => setCommentBody("")}
+                    autoSize={{ minRows: 0, maxRows: 100 }}
                 />
                 <Button className="button" onClick={handleAdd}>
                     Add

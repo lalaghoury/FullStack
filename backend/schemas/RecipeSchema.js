@@ -84,12 +84,7 @@ const recipeSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Category",
   },
-  comments: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Comment",
-    },
-  ],
+  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 });
 
 // Create a Mongoose model for the 'Recipe' schema

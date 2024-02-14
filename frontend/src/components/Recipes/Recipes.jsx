@@ -4,7 +4,7 @@ import { Breadcrumb, Divider, Select } from "antd";
 import RecipesCard from "../RecipesCard/RecipesCard";
 
 
-function Recipes() {
+function Recipes({ slice }) {
   const [next, setNext] = useState(false);
   return (
     <div className="recipes">
@@ -29,7 +29,7 @@ function Recipes() {
         <h1 className="text-black font-48">Recipes</h1>
         <span className="text-black bold">
           Sort By:
-          <Select className="dropdown antd-form-input" onChange={() => setNext(!next)} placeholder="Relevance" 
+          <Select className="dropdown antd-form-input" onChange={() => setNext(!next)} placeholder="Relevance"
             style={{ width: 200, color: '#b55d51f7' }}>
             <Select.Option className="dropdown bold" style={{ color: '#b55d51f7' }} value="Relevance">Relevance</Select.Option>
             <Select.Option className="dropdown bold" style={{ color: '#b55d51f7' }} value="Newest">Newest</Select.Option>
@@ -38,7 +38,7 @@ function Recipes() {
         </span>
       </div>
       <Divider />
-      <RecipesCard />
+      <RecipesCard slice={slice} />
     </div>
   );
 }

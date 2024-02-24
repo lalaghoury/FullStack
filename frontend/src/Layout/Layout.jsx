@@ -1,25 +1,20 @@
-import React from 'react';
-import { Layout } from 'antd';
-import App from '../App';
+import React, { useEffect } from 'react';
+import { Divider } from 'antd';
+import './Layout.scss';
+import { useAccount } from '../context/AccountContext';
 
-const { Header, Content, Footer } = Layout;
 
-const AppLayout = () => {
+const AppLayout = ({ children }) => {
+  const { handleUserActivity } = useAccount();
+
+  useEffect(() => {
+    handleUserActivity();
+  }, [])
+
   return (
-    <Layout className="layout">
-      <Header>
-        {/* Place your header components here */}
-      </Header>
-      <Content style={{ padding: '0 50px' }}>
-        <div className="site-layout-content">
-          <App />
-        </div>
-      </Content>
-      <Footer style={{ textAlign: 'center' }}>
-        {/* Place your footer components here */}
-      </Footer>
-    </Layout>
-  );
+
+    <div className="app-container">{children}<Divider /></div>
+  )
 };
 
 export default AppLayout;

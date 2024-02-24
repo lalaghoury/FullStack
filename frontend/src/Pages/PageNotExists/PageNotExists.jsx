@@ -1,8 +1,9 @@
 import React from 'react'
+import AppLayout from '../../Layout/Layout'
 
 function PageNotExists() {
   return (
-    <div>PageNotExists</div>
+    <AppLayout>PageNotExists</AppLayout>
   )
 }
 

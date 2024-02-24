@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import './Spinner.scss'
+import AppLayout from '../../Layout/Layout';
 
 function Spinner() {
     const navigate = useNavigate()
-    const [count, setCount] = React.useState(3);
+    const [count, setCount] = useState(3);
 
     useEffect(() => {
         if (count > 0) {
@@ -18,10 +19,13 @@ function Spinner() {
         }
     }, [count, navigate]);
     return (
-        <div className='spin'>
-            <h2>Access Denied, Kindly Login to continue <br /> Redirecting you to Login page in {count} seconds</h2>
-            <Spin />
-        </div>
+        <AppLayout>
+            <div className='spin'>
+                <h2>Access Denied, Kindly Login to continue <br /> Redirecting you to Login page in {count} seconds</h2>
+                <Spin />
+            </div>
+        </AppLayout>
+
     )
 }
 

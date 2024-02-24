@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import "./StayInTouch.scss";
 import { useAuth } from "../../context/AuthContext";
-import { Button, Input, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import axios from "axios";
 
-function StayInTouch() {
+function StayInTouch({ userId }) {
   const { auth, setAuth } = useAuth();
-  const [email, setEmail] = useState(null)
-  const handleNewsletterAction = async () => {
+  const handleNewsletterAction = async (values) => {
     try {
-      console.log(email)
-      const response = await axios.post("http://localhost:5000/newsletter/subscribe", { email });
+      const response = await axios.post("http://localhost:5000/newsletter/subscribe", { email: values.email, userId });
       console.log(response)
       const data = response.data;
       console.log(data)
@@ -38,18 +36,25 @@ function StayInTouch() {
             Join our newsletter, so that we reach out to you with our news and
             offers.
           </p>
-          <div className="stay-in-wrap">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <Button onClick={handleNewsletterAction} className="btn-primary-small bold disable-hover" type="primary" htmlType="submit">
-              Subscribe
-            </Button>
-          </div>
+          <Form onFinish={handleNewsletterAction} >
+            <div className="stay-in-wrap">
+              <Form.Item
+                name="email"
+                rules={[
+                  { required: true, message: 'Please enter your email!' },
+                  { type: 'email', message: 'Please enter a valid email!' }
+                ]}
+                validateTrigger="onSubmit"
+              >
+                <Input placeholder="Enter your email" className="email-input" />
+              </Form.Item>
+              <Form.Item>
+                <Button className="btn-primary-small bold disable-hover" type="primary" htmlType="submit">
+                  Subscribe
+                </Button>
+              </Form.Item>
+            </div>
+          </Form>
         </div >
       }
     </>

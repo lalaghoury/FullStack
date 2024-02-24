@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import './SearchPage.scss';
 import RecipesCard from '../../components/RecipesCard/RecipesCard';
-import axios from 'axios';
 import { useFunctions } from '../../context/FunctionsSupply';
+import AppLayout from '../../Layout/Layout';
 
 const SearchPage = () => {
     const [allRecipes, setAllRecipes] = useState([]);
@@ -44,12 +44,14 @@ const SearchPage = () => {
 
 
     return (
-        <div className="search-page">
-            <h2>Search Results for: {searchQuery}</h2>
-            <div className="recipes-container">
-                <RecipesCard userShow={true} data={allRecipes} query={searchQuery} />
+        <AppLayout>
+            <div className="search-page">
+                <h2>Search Results for: {searchQuery}</h2>
+                <div className="recipes-container">
+                    <RecipesCard userShow={true} data={allRecipes} query={searchQuery} />
+                </div>
             </div>
-        </div>
+        </AppLayout>
     );
 };
 

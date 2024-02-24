@@ -2,36 +2,32 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import Spinner from "../components/Spinner/Spinner";
+import { useNavigate } from "react-router-dom";
 
 export default function PrivateRoute({ Component, ...props }) {
     const [ok, setOk] = useState(false);
     const { auth } = useAuth();
-    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const verifyToken = async () => {
-            if (auth?.token) {
-                setLoading(true);
+        if (!auth?.token) {
+            navigate('/login');
+        } else {
+            const verifyToken = async () => {
                 try {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${auth.token}`;
                     const response = await axios.get('http://localhost:5000/verify');
                     setOk(response.data.ok);
-                    setLoading(false);
                 } catch (error) {
                     console.error("Verification failed:", error);
-                    setOk(false);
-                    setLoading(false);
                 }
-            } else {
-                setOk(false);
-                setLoading(false);
-            }
-        };
-        verifyToken();
-    }, [auth?.token]);
+            };
+            verifyToken();
+        }
+    }, [auth?.token, navigate]);
 
-    if (loading) return <h1>Loading...</h1>;
+    if (!ok) return <Spinner />;
 
-    return ok ? <Component {...props} /> : <Spinner />;
+    return <Component {...props} />;
 }
 

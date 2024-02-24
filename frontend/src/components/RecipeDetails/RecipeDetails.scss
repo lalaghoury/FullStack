@@ -1,8 +1,5 @@
 .recipe-details {
   width: 100%;
-  max-width: 1440px;
-  margin: auto;
-  padding: 0 120px;
 
   .recipe-details-head {
     .recipe-details-heading {
@@ -101,7 +98,6 @@
   }
 
   @media screen and (max-width: 1200px) {
-    padding: 0 32px;
     .recipe-details-body {
       width: 100%;
       flex-direction: column;

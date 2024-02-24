@@ -1,16 +1,22 @@
 import React from 'react'
 import './BlogPage.scss'
-import { Blog, BlogBreadcrumb } from '../../components/Blog/Blog'
+import { BlogBreadcrumb, BlogHeading } from '../../components/Blog/Blog'
+import AppLayout from '../../Layout/Layout'
+import BlogCard from '../../components/BlogCard/BlogCard'
 function BlogPage() {
     return (
-        <div className="blog-page">
-            <div className="blog-page-heading">
-                <BlogBreadcrumb />
+        <AppLayout>
+            <div className="blog-page">
+                <div className="blog-page-heading">
+                    <BlogBreadcrumb />
+                    <BlogHeading />
+                </div>
+                <div className="blog-page-body">
+                    <BlogCard />
+                </div>
             </div>
-            <div className="blog-page-body">
-                <Blog slice={50} />
-            </div>
-        </div>
+        </AppLayout>
+
     )
 }
 

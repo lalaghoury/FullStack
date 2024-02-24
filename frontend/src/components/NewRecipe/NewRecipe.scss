@@ -1,13 +1,10 @@
 .new-recipe {
   width: 100%;
-  min-height: 100vh;
-  padding: 0 120px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  max-width: 1440px;
-  margin: auto;
+  margin: 50px 0;
 
   .new-recipe-image {
     width: 30%;
@@ -34,8 +31,6 @@
 
 @media screen and (max-width: 1024px) {
   .new-recipe {
-    width: 100%;
-    padding: 0 32px;
     gap: 20px;
 
     .new-recipe-text {
@@ -58,7 +53,6 @@
 @media screen and (max-width: 750px) {
   .new-recipe {
     flex-direction: column;
-    min-height: auto;
     margin: 50px 0 100px 0;
     .new-recipe-image {
       display: none;
@@ -78,5 +72,4 @@
       }
     }
   }
-  
 }

@@ -71,7 +71,17 @@ app.use("/comments", commentsRouter);
 
 // Newsletter Route
 const newsletterRouter = require("./routes/newsletter");
+const {
+  sendEmailWithTransporter,
+  transporter,
+  mailOptions,
+} = require("./config/nodemailerConfig");
 app.use("/newsletter", newsletterRouter);
+
+// test
+app.get("/test", (req, res) => {
+  sendEmailWithTransporter(transporter, mailOptions);
+});
 
 ///////////////////////////////////////////////////////////////////////////////
 

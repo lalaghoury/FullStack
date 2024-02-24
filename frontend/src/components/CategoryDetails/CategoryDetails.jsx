@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useFunctions } from '../../context/FunctionsSupply';
 import { FireOutlined } from '@ant-design/icons';
 import { Breadcrumb, Divider, Rate, Select } from 'antd';
+import AppLayout from '../../Layout/Layout';
 
 function CategoryDetails() {
     const { category_id } = useParams();
@@ -52,87 +53,89 @@ function CategoryDetails() {
     }
 
     return (
-        <div className="category-details">
-            <div className="breadcrumb">
-                <Breadcrumb
-                    className='breadcrumb'
-                    separator=">"
-                    items={[
-                        {
-                            title: 'Home',
-                            href: '/',
-                            className: 'bold',
-                        },
-                        {
-                            title: 'Categories',
-                            href: '/category',
-                            className: 'bold',
-                        },
-                        {
-                            title: category.categoryname,
-                            href: `/category/${category._id}`,
-                            className: 'bold',
-                        }
-                    ]}
-                />
-            </div>
-            <div className="category-details-heading">
-                <h1 className="text-black font-48">{category.categoryname}</h1>
-                <span className="bold">
-                    Category:
-                    <Select className="dropdown antd-form-input" value={category_id} placeholder="Relevance"
-                        style={{ width: 200, color: '#b55d51f7' }}>
-                        {allCategories.map(category => (
-                            <Select.Option className="dropdown" key={category._id} value={category._id}>
-                                <Link
-                                    className="links-fix text-primary disable-hover-anchor"
-                                    to={`/category/${category._id}`}
-                                >
-                                    {category.categoryname}
-                                </Link>
-                            </Select.Option>
+        <AppLayout>
+            <div className="category-details">
+                <div className="breadcrumb">
+                    <Breadcrumb
+                        className='breadcrumb'
+                        separator=">"
+                        items={[
+                            {
+                                title: 'Home',
+                                href: '/',
+                                className: 'bold',
+                            },
+                            {
+                                title: 'Categories',
+                                href: '/category',
+                                className: 'bold',
+                            },
+                            {
+                                title: category.categoryname,
+                                href: `/category/${category._id}`,
+                                className: 'bold',
+                            }
+                        ]}
+                    />
+                </div>
+                <div className="category-details-heading">
+                    <h1 className="text-black font-48">{category.categoryname}</h1>
+                    <span className="bold">
+                        Category:
+                        <Select className="dropdown antd-form-input" value={category_id} placeholder="Relevance"
+                            style={{ width: 200, color: '#b55d51f7' }}>
+                            {allCategories.map(category => (
+                                <Select.Option className="dropdown" key={category._id} value={category._id}>
+                                    <Link
+                                        className="links-fix text-primary disable-hover-anchor"
+                                        to={`/category/${category._id}`}
+                                    >
+                                        {category.categoryname}
+                                    </Link>
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    </span>
+                </div>
+                <Divider />
+                <div className="category-display">
+                    <div className="card-wrapper">
+                        {category.recipes.map(recipe => (
+                            <div key={recipe._id} className="card">
+                                <div className="card-parent">
+                                    <div className="card-parent-img">
+                                        <img src={recipe.recipe_imageurl} alt={recipe.recipe_title} className="card-image" />
+                                    </div>
+                                    <div className="card-rating">
+                                        <Rate
+                                            style={{ fontSize: 22, color: "#B55D51" }}
+                                            tooltips={desc}
+                                            onChange={value => handleRatingChange(value, recipe._id)}
+                                            value={cardRatings[recipe._id]}
+                                        />
+                                    </div>
+                                </div>
+                                <h3 className="font-16">
+                                    <Link className="links-fix text-black" to={`/recipe/${recipe._id}`}>{recipe.recipe_title}</Link>
+                                </h3>
+                                <div className="card-user">
+                                    <span className="card-left">
+                                        <img src={recipe.user.userimage} alt="" />
+                                        <h4>
+                                            <Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>{recipe.user.username}</Link>
+                                        </h4>
+                                    </span>
+                                    <span className="card-right">
+                                        <FireOutlined style={{ color: "red" }} />
+                                        <h4>{recipe.firecount}</h4>
+                                    </span>
+                                </div>
+                            </div>
                         ))}
-                    </Select>
-                </span>
-            </div>
-            <Divider />
-            <div className="category-display">
-                <div className="card-wrapper">
-                    {category.recipes.map(recipe => (
-                        <div key={recipe._id} className="card">
-                            <div className="card-parent">
-                                <div className="card-parent-img">
-                                    <img src={recipe.recipe_imageurl} alt={recipe.recipe_title} className="card-image" />
-                                </div>
-                                <div className="card-rating">
-                                    <Rate
-                                        style={{ fontSize: 22, color: "#B55D51" }}
-                                        tooltips={desc}
-                                        onChange={value => handleRatingChange(value, recipe._id)}
-                                        value={cardRatings[recipe._id]}
-                                    />
-                                </div>
-                            </div>
-                            <h3 className="font-16">
-                                <Link className="links-fix text-black" to={`/recipe/${recipe._id}`}>{recipe.recipe_title}</Link>
-                            </h3>
-                            <div className="card-user">
-                                <span className="card-left">
-                                    <img src={recipe.user.userimage} alt="" />
-                                    <h4>
-                                        <Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>{recipe.user.username}</Link>
-                                    </h4>
-                                </span>
-                                <span className="card-right">
-                                    <FireOutlined style={{ color: "red" }} />
-                                    <h4>{recipe.firecount}</h4>
-                                </span>
-                            </div>
-                        </div>
-                    ))}
+                    </div>
                 </div>
             </div>
-        </div>
+        </AppLayout>
     );
 }
 

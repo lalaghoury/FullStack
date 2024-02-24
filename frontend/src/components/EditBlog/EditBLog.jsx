@@ -12,9 +12,7 @@ function EditBlog() {
     const { blog_id } = useParams();
     const [allCategories, setAllCategories] = useState([]);
     const navigate = useNavigate();
-
     const {
-        onFinishBlog,
         uploadButton,
         beforeUpload,
         handleUpload,
@@ -46,31 +44,43 @@ function EditBlog() {
         }
         fetchBlog();
     }, [blog_id]);
-    if (blog === null) {
+    if (blog === null || loading) {
         return <h1>Loading...</h1>;
     } else if (!blog) {
         console.error('Blog not found');
         return <h1>Blog not found</h1>;
     }
+
+    const handleUpdateBlog = (values) => {
+        if (blog.title === values.title && blog.slogan === values.slogan && blog.category === values.category && blog.image === recipe_imageurl && blog.content === values.content && blog.description === values.description) {
+            return message.error('No changes made', 3);
+        }
+        Modal.confirm({
+            title: 'Are you sure you want to update this blog?',
+            content: 'Once updated, the changes cannot be undone.',
+            onOk: () => {
+                console.debug('UpdateBlog values:', values);
+                updateBlog(values);
+            },
+        });
+    };
+
     const updateBlog = async (values) => {
         try {
             const response = await axios.put(`http://localhost:5000/blog/${blog_id}`, { ...values, image: recipe_imageurl });
             if (response.data.success) {
-                console.log(`Update Successfull`, response.data.updatedPost);
                 message.success("Blog Updated Successfully", 2);
-                navigate(-1)
-            } else {
-                console.log(`Error Updationg Blog`)
+                navigate(-1);
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
+            message.error(error.response.data.message, 3);
         }
     }
     const deleteBlog = async () => {
         try {
             const response = await axios.delete(`http://localhost:5000/blog/${blog_id}`);
             if (response.data.success) {
-                console.log(`Delete Successfull`, response.data.deletedPost);
                 message.success("Blog Deleted Successfully", 2);
                 setRecipe_imageurl('');
                 setShowImage(false)
@@ -90,7 +100,6 @@ function EditBlog() {
         });
     }
     const { title, description, content, slogan } = blog;
-    console.log(title)
 
     return (
         <div>
@@ -100,7 +109,7 @@ function EditBlog() {
                 initialValues={{
                     title, description, content, slogan,
                 }}
-                onFinish={updateBlog}
+                onFinish={handleUpdateBlog}
                 layout="vertical"
                 className="recipe-form"
                 style={{

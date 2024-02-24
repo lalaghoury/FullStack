@@ -1,9 +1,5 @@
 .category-details {
   width: 100%;
-  max-width: 1440px;
-  margin: auto;
-  padding: 0 120px;
-
   .category-details-heading {
     display: flex;
     align-items: center;
@@ -25,15 +21,5 @@
         color: rgba(181, 93, 81, 0.97) !important;
       }
     }
-  }
-
-  // .category-display{
-
-  // }
-}
-
-@media screen and (max-width: 1200px) {
-  .category-details {
-    padding: 0 32px;
   }
 }

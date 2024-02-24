@@ -1,13 +1,10 @@
 .signup-page {
   width: 100%;
   min-height: calc(100vh - 150px);
-  padding: 0 120px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 48px;
-  max-width: 1440px;
-  margin: auto;
   .signup-img {
     width: 40%;
     img {
@@ -18,9 +15,7 @@
     width: 60%;
     display: flex;
     flex-direction: column;
-    // gap: 25px;
     text-align: left;
-
 
     .small-input{
       width: 100%;

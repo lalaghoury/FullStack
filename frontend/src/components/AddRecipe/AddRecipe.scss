@@ -1,8 +1,5 @@
 .add-recipe {
   min-width: 100%;
-  max-width: 1440px;
-  min-height: 100vh;
-  padding: 0 120px;
 
   .add-heading {
     width: 100%;
@@ -21,15 +18,4 @@
     width: 100%;
     margin: auto;
   }
-}
-
-@media screen and (max-width: 1200px) {
-  .add-recipe {
-    padding: 0 32px;
-  }
-
-  .add-form {
-    // padding: 0 32px;
-  }
-  
 }

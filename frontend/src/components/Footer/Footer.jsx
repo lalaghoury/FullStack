@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Footer.scss";
 import Logo from "../Logo/Logo";
 import { Link } from "react-router-dom";
+import { Button, Divider, Form, Input, message } from "antd";
+import { useAuth } from "../../context/AuthContext";
+import axios from "axios";
 
 function Footer() {
+  const { auth, setAuth } = useAuth();
+  const handleNewsletterAction = async (values) => {
+    try {
+      const response = await axios.post("http://localhost:5000/newsletter/subscribe", { email: values.email, userId: auth.user._id });
+      const data = response.data;
+      if (data.success) {
+        message.success(data.message);
+        const updatedUser = { ...auth.user, newsletter: data.user.newsletter };
+        setAuth((previousAuth) => ({
+          ...previousAuth,
+          user: updatedUser,
+          token: data.token
+        }));
+        localStorage.setItem("auth", JSON.stringify({ ...auth, user: updatedUser }));
+      }
+    } catch (error) {
+      message.error(error.response.data.message);
+      console.log(error);
+    }
+  };
   return (
     <div className="footer">
       <div className="footer-container">
@@ -36,23 +59,37 @@ function Footer() {
               <p className="text-black font-16 text-grey"><Link className="text-grey links-fix f-l" to="/cookies">Cookies</Link></p>
             </div>
           </div>
-          <div className="footer-letter">
+          {auth && auth.user && auth.user.newsletter ? null : <div className="footer-letter">
             <h1 className="text-black font-48">Newsletter</h1>
             <p className="text-black font-16">
               Subscribe to our newsletter to get more free tip{" "}
             </p>
-            <input className="no-outline" type="text" placeholder="Enter your email address" />
-
-            <button className="btn-primary-medium bg-primary cursor text-white">Subscribe</button>
-          </div>
+            <Form onFinish={handleNewsletterAction} style={{ width: "100%" }}>
+              <Form.Item
+                name="email"
+                rules={[
+                  { required: true, message: 'Please enter your email!' },
+                  { type: 'email', message: 'Please enter a valid email!' }
+                ]}
+                validateTrigger="onSubmit"
+              >
+                <Input placeholder="Enter your email" />
+              </Form.Item>
+              <Form.Item>
+                <Button className="btn-primary-small bold disable-hover" type="primary" htmlType="submit">
+                  Subscribe
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>}
         </div>
         <hr />
         <div className="footer-disclaimer">
-          <p>Copyright © 2022. All Rights Reserved.</p>
+          <p>Copyright © 2022. All Rights Reserved to Aasil Adil Ameer-u-ddin Ghoury.</p>
           <div className="social-links">
             <img
               src="https://i.ibb.co/9yCd0cb/s-homepage-social-media-icon.png"
-              alt="logos image"
+              alt="img"
             />
           </div>
         </div>

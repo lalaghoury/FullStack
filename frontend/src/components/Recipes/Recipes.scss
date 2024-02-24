@@ -1,7 +1,6 @@
 .recipes {
   width: 100%;
-  min-height: calc(100vh - 150px);
-  padding: 0 120px;
+  min-height: calc(70vh - 150px);
 
   .recipes-heading {
     display: flex;
@@ -27,11 +26,5 @@
     button {
       padding: 12px 24px;
     }
-  }
-}
-
-@media screen and (max-width: 1200px) {
-  .recipes {
-    padding: 0 32px;
   }
 }

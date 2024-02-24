@@ -8,9 +8,9 @@ import { useAuth } from '../../context/AuthContext';
 import './Navbar.scss';
 
 const Navbar = () => {
-    const navigate = useNavigate()
     const { handleSignout } = useAccount()
     const { auth, } = useAuth();
+    const navigate = useNavigate();
 
     const items = [
         {
@@ -25,7 +25,7 @@ const Navbar = () => {
             type: 'divider',
         },
         {
-            label: <Button onClick={handleSignout} className="disable-hover text-white bold bg-primary">Logout</Button>,
+            label: <Button onClick={() => { handleSignout(); setTimeout(() => navigate('/login'), 500) }} className="disable-hover text-white bold bg-primary">Logout</Button>,
             key: '3',
         },
     ];
@@ -66,6 +66,7 @@ const Navbar = () => {
                                 alt="user icon"
                                 style={{ width: '40px', height: '40px', borderRadius: '50%' }}
                             />
+                            <DownOutlined />
                         </Space>
                     </Dropdown>
                 </div>

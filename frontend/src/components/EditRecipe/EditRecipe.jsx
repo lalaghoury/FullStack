@@ -7,13 +7,13 @@ import { useFunctions } from "../../context/FunctionsSupply";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import TextArea from "antd/es/input/TextArea";
+
 function EditRecipe() {
   const [loading, setLoading] = useState(false);
   const [recipe, setRecipe] = useState({});
   const { recipe_id } = useParams();
   const navigate = useNavigate();
   const { uploadButton, beforeUpload, handleUpload, recipe_imageurl, setRecipe_imageurl, showImage, setShowImage, form } = useAddRecipe();
-
   const { getAllCategories, getSingleRecipe } = useFunctions();
   const [categories, setCategories] = React.useState([]);
 
@@ -41,35 +41,46 @@ function EditRecipe() {
   };
 
   const updateRecipe = async (values) => {
-    console.log(recipe_imageurl)
     try {
-      const response = await axios.put(`http://localhost:5000/recipe/${recipe_id}`, { ...values, recipe_imageurl: recipe_imageurl });
-      if (response.data.success) {
-        console.log(`Update Successful`, response.data.updatedRecipe);
-        form.resetFields();
-        message.success("Recipe Updated Successfully", 2);
-
-        navigate(-1);
-      } else {
-        console.log(`Error Updating Recipe`);
+      if (JSON.stringify(recipe) === JSON.stringify(values) && recipe.recipe_imageurl === recipe_imageurl) {
+        return message.warning('No changes to save', 2);
       }
+      Modal.confirm({
+        title: 'Are you sure you want to update this recipe?',
+        content: 'If you proceed, the changes you have made will be saved.',
+        onOk: async () => {
+          const response = await axios.put(`http://localhost:5000/recipe/${recipe_id}`, { ...values, recipe_imageurl: recipe_imageurl });
+          if (response.data.success) {
+            form.resetFields();
+            message.success("Recipe Updated Successfully", 2);
+            navigate(-1);
+          }
+        },
+      });
     } catch (error) {
+      message.error(error.response.data.message);
       console.log(error);
     }
   };
 
   const deleteRecipe = async () => {
     try {
-      const response = await axios.delete(`http://localhost:5000/recipe/${recipe_id}`);
-      if (response.data.success) {
-        console.log(`Recipe Deleted Successfull`, response.data.deletedRecipe);
-        message.success("Recipe Deleted Successfully", 2);
-        setRecipe_imageurl('');
-        setShowImage(false)
-        navigate(-2)
-      }
+      Modal.confirm({
+        title: 'Are you sure you want to delete this recipe?',
+        content: 'This action cannot be undone.',
+        onOk: async () => {
+          const response = await axios.delete(`http://localhost:5000/recipe/${recipe_id}`);
+          if (response.data.success) {
+            console.log(`Recipe Deleted Successfull`, response.data.deletedRecipe);
+            message.success("Recipe Deleted Successfully", 2);
+            setRecipe_imageurl('');
+            setShowImage(false);
+            navigate(-2);
+          }
+        },
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
   const handleRecipeDelete = () => {
@@ -81,11 +92,6 @@ function EditRecipe() {
       },
     });
   }
-
-
-
-
-
 
   return (
     <div>

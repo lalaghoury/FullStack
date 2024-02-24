@@ -219,6 +219,28 @@ html,
   color: #b55d51;
 }
 
+.disable-hover-sec {
+  transition: all 0.3s ease-in-out;
+  background-color: #ebebebbe;
+  color: #4c4c4c;
+  border-color: none;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.show-on-recipe {
+  align-self: flex-start;
+}
+
+.disable-hover-sec:hover {
+  transition: all 0.3s ease-in-out;
+  background-color: #ebebeb !important;
+  color: #4c4c4c !important;
+  border-color: none !important;
+  border: none !important;
+}
+
 @media screen and (max-width: 1200px) {
   .common-heading h1 {
     font-size: 32px;

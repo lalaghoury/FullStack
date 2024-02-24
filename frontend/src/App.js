@@ -21,25 +21,75 @@ import AddBlog from "./components/AddBlog/AddBlog";
 import MyRecipesPage from "./Pages/MyRecipesPage/MyRecipesPage";
 import BlogPage from "./Pages/BlogPage/BlogPage";
 import BlogDetails from "./components/BlogDetails/BlogDetails";
-import PostList from "./PostList";
-import { CommentsProvider } from "./context/CommentsContext";
+import SavedRecipesPage from "./Pages/SavedRecipesPage/SavedRecipesPage";
+import PrivateRoute from "./Routes/Private";
+import { SinglePrivate } from "./Routes/SinglePrivate";
+import EditRecipe from "./components/EditRecipe/EditRecipe";
+import EditBlog from "./components/EditBlog/EditBLog";
+import ChangePasswordPage from "./Pages/ChangePasswordPage/ChangePasswordPage";
+import AlreadyLoggedInRoute from "./Routes/AlreadyLoggedIn";
+import AboutUsPage from "./Pages/AboutUsPage/AboutUsPage";
+import CookiesPage from "./Pages/CookiesPage/CookiesPage";
+import PrivacyPolicyPage from "./Pages/PrivacyPolicyPage/PrivacyPolicyPage";
+import ContactPage from "./Pages/ContactPage/ContactPage";
+import SearchPage from "./Pages/SearchPage/SearchPage";
+import MyCookbookPage from "./Pages/MyCookbookPage/MyCookbookPage";
+import Layout from "antd/es/layout/layout";
+import UserRecipeCollectionPage from "./Pages/UserRecipeCollectionPage/UserRecipeCollectionPage";
 
 function App() {
   return (
     <div className="App-container">
-      <CommentsProvider>
+      <BrowserRouter>
         <FunctionSupplyProvider>
           <AccountProvider>
             <AddDataProvider>
               <AddRecipeProvider>
-                <BrowserRouter>
+                <Layout style={{ backgroundColor: "white" }}>
                   <Header />
                   <Routes>
                     <Route path="/" element={<Homepage />} />
+                    <Route path="/test" element={<Test />} />
+                    {/* Private Routes */}
+                    <Route
+                      path="/add-recipe"
+                      element={<PrivateRoute Component={AddRecipePage} />}
+                    />
+                    <Route
+                      path="/user/:user_id"
+                      element={<PrivateRoute Component={UserProfilePage} />}
+                    />
+                    <Route
+                      path="/add-blog"
+                      element={<PrivateRoute Component={AddBlog} />}
+                    />
+                    <Route
+                      path="/my-recipes"
+                      element={<PrivateRoute Component={MyRecipesPage} />}
+                    />
+                    <Route
+                      path="/saved-recipes"
+                      element={<PrivateRoute Component={SavedRecipesPage} />}
+                    />
+                    <Route
+                      path="/blog/edit/:blog_id"
+                      element={
+                        <SinglePrivate Component={EditBlog} type="blog" />
+                      }
+                    />
+                    <Route
+                      path="/recipe/edit/:recipe_id"
+                      element={
+                        <SinglePrivate Component={EditRecipe} type="recipe" />
+                      }
+                    />
                     <Route path="/recipe" element={<AllRecipesPage />} />
+                    <Route
+                      path="/user/:user_id/change-password"
+                      element={<PrivateRoute Component={ChangePasswordPage} />}
+                    />
                     <Route path="/category" element={<CategoriesPage />} />
-                    <Route path="/add-recipe" element={<AddRecipePage />} />
-                    <Route path="/post" element={<PostList />} />
+                    <Route path="/blog" element={<BlogPage />} />
                     <Route
                       path="/recipe/:recipe_id"
                       element={<RecipeDetails />}
@@ -48,23 +98,34 @@ function App() {
                       path="/category/:category_id"
                       element={<CategoryDetails />}
                     />
-                    <Route path="/test" element={<Test />} />
-                    <Route path="/signup" element={<SignUpPage />} />
-                    <Route path="/login" element={<LogInPage />} />
-                    <Route path="user/:user_id" element={<UserProfilePage />} />
-                    <Route path="/add-blog" element={<AddBlog />} />
-                    <Route path="my-recipes" element={<MyRecipesPage />} />
-                    <Route path="/blog" element={<BlogPage />} />
                     <Route path="/blog/:blog_id" element={<BlogDetails />} />
-                    <Route path="/*" element={<PageNotExists />} />
+                    <Route
+                      path="/login"
+                      element={<AlreadyLoggedInRoute Component={LogInPage} />}
+                    />
+                    <Route
+                      path="/signup"
+                      element={<AlreadyLoggedInRoute Component={SignUpPage} />}
+                    />
+                    <Route path="/about" element={<AboutUsPage />} />
+                    <Route path="/cookies" element={<CookiesPage />} />
+                    <Route path="/privacy" element={<PrivacyPolicyPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/search" element={<SearchPage />} />
+                    <Route path="/user/cookbook" element={<MyCookbookPage />} />
+                    <Route
+                      path="/user/recipe/"
+                      element={<AllRecipesPage />}
+                    />
+                    <Route path="*" element={<PageNotExists />} />
                   </Routes>
                   <Footer />
-                </BrowserRouter>
+                </Layout>
               </AddRecipeProvider>
             </AddDataProvider>
           </AccountProvider>
         </FunctionSupplyProvider>
-      </CommentsProvider>
+      </BrowserRouter>
     </div>
   );
 }

@@ -3,6 +3,18 @@ const router = express.Router();
 
 const CategoryModel = require("../schemas/CategorySchema");
 
+// Route to get only the category name
+router.get("/names", async (req, res) => {
+  try {
+    const categories = await CategoryModel.find().select("categoryname");
+    console.log(categories);
+    res.status(200).json(categories);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     const categories = await CategoryModel.find()

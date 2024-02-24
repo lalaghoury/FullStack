@@ -4,7 +4,8 @@ import { useFunctions } from '../../context/FunctionsSupply';
 import WishlistButton from '../../components/RecipesCard/WishlistButton';
 import { Link } from 'react-router-dom';
 import { FireOutlined } from '@ant-design/icons';
-import { Rate } from 'antd';
+import { Breadcrumb, Button, Empty, Rate } from 'antd';
+import { useAuth } from '../../context/AuthContext';
 
 const MyRecipesPage = () => {
     const { getUser } = useFunctions();
@@ -12,11 +13,15 @@ const MyRecipesPage = () => {
     const [user, setUser] = useState(null);
     const [cardRatings, setCardRatings] = useState({});
     const desc = ['Terrible', 'Bad', 'Normal', 'Good', 'Wonderful'];
-    const userId = localStorage.getItem('userId');
+    const { auth } = useAuth();
+
+    const onAction = () => {
+        console.log('hey')
+    }
 
     useEffect(() => {
         setLoading(true);
-        getUser(userId)
+        getUser(auth?.user._id)
             .then(data => {
                 setUser(data);
                 const initialRatings = data.recipes?.reduce((ratings, recipe) => {
@@ -27,7 +32,7 @@ const MyRecipesPage = () => {
             })
             .catch(error => console.error(error))
             .finally(() => setLoading(false));
-    }, [getUser, userId]);
+    }, [getUser, auth?.user._id]);
 
     const handleRatingChange = useCallback((value, recipeId) => {
         if (Number.isInteger(value) && value >= 0 && value < desc.length) {
@@ -49,6 +54,23 @@ const MyRecipesPage = () => {
 
     return (
         <div className="my-recipes-page">
+            <div className="breadcrumb">
+                <Breadcrumb
+                    separator=">"
+                    items={[
+                        {
+                            title: 'Home',
+                            href: '/',
+                            className: 'bold',
+                        },
+                        {
+                            title: 'My Recipes',
+                            href: '#',
+                            className: 'bold',
+                        },
+                    ]}
+                />
+            </div>
             <h1>{user.username.charAt(0).toUpperCase() + user.username.slice(1)}'s Recipes</h1>
             <div className="card-wrapper">
                 {user.recipes && user.recipes.length > 0 ? (
@@ -58,7 +80,7 @@ const MyRecipesPage = () => {
                                 <div className="card-parent-img">
                                     <img src={recipe.recipe_imageurl} alt={recipe.recipe_title} className="card-image" />
                                 </div>
-                                <WishlistButton />
+                                <WishlistButton saves={recipe.saves} recipeId={recipe._id} onAction={onAction} />
                                 <div className="card-rating">
                                     <Rate
                                         style={{ fontSize: 22, color: "#B55D51" }}
@@ -84,11 +106,25 @@ const MyRecipesPage = () => {
                         </div>
                     ))
                 ) : (
-                    <div style={{ width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 20, justifyContent: 'center' }}>
-                        <h2 style={{ textAlign: 'center', marginBottom: 50 }}>No recipes to display</h2>
-                        <Link className='links-fix text-black' to="/recipes">Browse recipes</Link>
-                        <Link to={`/user/${user._id}`} className='links-fix text-black'>Go back to profile</Link>
-                        <Link to={`/add-recipe`} className='links-fix text-black'>Add Your Recipe Now!</Link>
+                    <div className="empty-recipes-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', margin: '0 auto', width: '100%' }}>
+                        <Empty
+                            description={
+                                <span>
+                                    No recipes to display
+                                </span>
+                            }
+                        />
+                        <div className="empty-recipes-actions" style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'space-between' }}>
+                            <Button className='disable-hover bold text-black'>
+                                <Link to="/recipes">Browse recipes</Link>
+                            </Button>
+                            <Button className='disable-hover bold text-black'>
+                                <Link to={`/user/${user._id}`}>Go back to profile</Link>
+                            </Button>
+                            <Button type="dashed" className='disable-hover bold text-black'>
+                                <Link to={`/add-recipe`}>Add Your Recipe Now!</Link>
+                            </Button>
+                        </div>
                     </div>
                 )}
             </div>

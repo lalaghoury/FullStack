@@ -102,8 +102,10 @@
       }
     }
   }
+}
 
-  @media screen and (max-width: 1200px) {
+@media screen and (max-width: 1200px) {
+  .blog-details {
     padding: 0 32px;
     .blog-details-head {
       width: 100%;

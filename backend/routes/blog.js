@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const blogController = require("../controllers/blogController");
+const { requireSignin } = require("../middlewares/authMiddleware");
 
 // Get all blog posts
 router.get("/", blogController.getAllPosts);
@@ -9,12 +10,19 @@ router.get("/", blogController.getAllPosts);
 router.get("/:id", blogController.getPostById);
 
 // Create a new blog post
-router.post("/", blogController.createPost);
+router.post("/", requireSignin, blogController.createPost);
 
 // Update a blog post by id
-router.put("/:id", blogController.updatePost);
+router.put("/:id", requireSignin, blogController.updatePost);
 
 // Delete a blog post by id
-router.delete("/:id", blogController.deletePost);
+router.delete("/:id", requireSignin, blogController.deletePost);
+
+// Get a single blog only by author
+router.get(
+  "/:blogId/authorship",
+  requireSignin,
+  blogController.checkBlogByAuthor
+);
 
 module.exports = router;

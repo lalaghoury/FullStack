@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./RecipeDetails.scss";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import RecipeRating from "./RecipeRating";
 import { Breadcrumb, Button, Card, Flex } from "antd";
-import { CalendarOutlined, CommentOutlined, HeartOutlined } from "@ant-design/icons";
+import { CalendarOutlined, CommentOutlined, EditOutlined, HeartOutlined } from "@ant-design/icons";
 import { useFunctions } from "../../context/FunctionsSupply";
 import CommentsSection from "../CommentsSection/CommentsSection";
+import { useAuth } from "../../context/AuthContext";
 
 const RecipeDetails = () => {
     const { getAllRecipes } = useFunctions();
@@ -13,6 +14,8 @@ const RecipeDetails = () => {
     const [allRecipes, setAllRecipes] = useState([]);
     const [recipe, setRecipe] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { auth } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -27,7 +30,6 @@ const RecipeDetails = () => {
                 setLoading(false);
             }
         };
-
         fetchRecipes();
     }, [recipe_id, getAllRecipes]);
 
@@ -69,23 +71,32 @@ const RecipeDetails = () => {
                 </div>
                 <div className="recipe-details-user">
                     <span className="recipe-details-user-card">
-                        <img src={recipe.user.userimage} alt="userimage" style={{ marginRight: 10 }} />
+                        <img src={recipe.user.userimage} alt="userimage" style={{ marginRight: 10, width: 40, borderRadius: '50%' }}  />
                         <h4>
                             <Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>{recipe.user.username}</Link>
                         </h4>
                     </span>
                     <span className="recipe-details-user-card"> <CalendarOutlined style={{ fontSize: 22, color: "#B55D51", marginRight: 5 }} /> {recipe.dateField}</span>
                     <span className="recipe-details-user-card"> <CommentOutlined style={{ fontSize: 22, color: "#B55D51", marginRight: 5 }} />
-                        {recipe.comments} Comments
+                        {recipe.comments.length == 0 ? 0 : recipe.comments.length} Comments
                     </span>
                     <span className="recipe-details-user-card"> <HeartOutlined style={{ fontSize: 22, color: "#B55D51", marginRight: 5 }} />
-                        {recipe.saves} Saves
+                        {recipe.saves.length} Saves
                     </span>
                     <span className="recipe-details-user-card">
                         <Flex gap="middle" vertical>
                             <RecipeRating rating={recipe.recipe_ratings} />
                         </Flex>
                         <h5> &nbsp; {recipe.recipe_ratings} / 5 Reviews</h5>
+                    </span>
+                    <span className="recipe-details-user-card">
+                        {recipe.user._id === auth?.user?._id && <div className='edit-button'>
+                            <Button className="disable-hover bold"
+                                style={{ margin: 0 }}
+                                onClick={() => navigate(`/recipe/edit/${recipe._id}`)}>
+                                <EditOutlined style={{ padding: 0 }} />Edit
+                            </Button>
+                        </div>}
                     </span>
                 </div>
                 <hr />
@@ -132,7 +143,10 @@ const RecipeDetails = () => {
                         </div>
                     </div>
                     <div className="recipe-comments">
-                        <CommentsSection Id={recipe_id} used={"RecipeSchema"} />
+                        {
+                            auth?.user ? <CommentsSection Id={recipe_id} used={"Recipe"} /> :
+                                <div className="tac">Please login to comment <Button className="disable-hover" type="primary" onClick={() => navigate('/login')}>Login</Button></div>
+                        }
                     </div>
                 </div>
                 <div className="body-right">

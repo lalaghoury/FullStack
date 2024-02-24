@@ -1,10 +1,12 @@
 import React from "react";
 import "./HeroSection.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAccount } from "../../context/AccountContext";
+import { Button } from "antd";
 
 function Herosection() {
   const { loginCheck } = useAccount();
+  const navigate = useNavigate();
   const user = loginCheck();
   return (
     <div className="hero-container">
@@ -16,17 +18,23 @@ function Herosection() {
           </h1>
         </div>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-          vitae enim pharetra, venenatis nunc eget, finibus est. Proin velit{" "}
+          Discover the world of flavors with a daily dose of delicious recipes, cooking tips, and culinary inspiration. Satisfy your cravings and explore new dishes every day.
         </p>
-        
+
         {user ? (
-          <> <button className="btn-primary-medium bg-primary cursor"><Link className="text-white links-fix" to="/signup">Get Started</Link></button></>
+          <> <Button
+            onClick={() => navigate("/my-recipes")}
+            className="disable-hover bold text-primary"
+            style={{ height: 50, display: "flex", justifyContent: "center", alignItems: "center" }}>Check Your Profile</Button></>
         ) : (
           <>
             <div className="btn-h">
-              <button className="btn bg-grey bg-primary dis cursor"><Link className="text-black links-fix" to="/login">Log in</Link></button>
-              <button className="btn-primary-medium bg-primary cursor"><Link className="text-white links-fix" to="/signup">Sign up</Link></button>
+              <Button onClick={() => navigate("/login")}
+                className="disable-hover bold text-primary"
+                style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>Log in</Button>
+              <Button onClick={() => navigate("/signup")}
+                className="disable-hover bold text-primary"
+                style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>Sign up</Button>
             </div>
             <p className="p-h ">
               Do you have account?{" "}

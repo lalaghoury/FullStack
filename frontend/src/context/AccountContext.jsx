@@ -1,54 +1,50 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { message } from "antd";
 import axios from "axios";
+import { useAuth } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const AccountContext = createContext();
 
 export const AccountProvider = ({ children }) => {
+    const { auth, setAuth } = useAuth();
+    const navigate = useNavigate();
 
-
-    const handleSignup = async (values) => {
-        try {
-            const response = await axios.post('http://localhost:5000/signup', values);
-            const data = response.data;
-            if (data.success) {
-                message.success(data.success, 3, () => {
-                    window.location.href = "/login";
-                });
-            }
-        } catch (error) {
-            console.error("Signup failed:", error);
-        }
-    };
-
-    const handleLogin = async (values) => {
-        try {
-            const response = await axios.post('http://localhost:5000/login', values);
-            const data = response.data;
-            console.log(`abc1`, data)
-            if (data.success) {
-                localStorage.setItem("userId", data.userId);
-                localStorage.setItem("loggedIn", true);
-                message.success(data.success, 2);
-                window.location.href = "/";
-            }
-        } catch (error) {
-            console.error("Login failed:", error);
-        }
-    };
+    
+    // const handleSignup = async (values) => {
+    //     try {
+    //         const response = await axios.post('http://localhost:5000/signup', values);
+    //         const data = response.data;
+    //         if (data.success) {
+    //             message.success(data.success, 3, () => {
+    //                 return true;
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.error("Signup failed:", error);
+    //     }
+    // };
 
     const handleSignout = async () => {
         try {
             const response = await axios.get('http://localhost:5000/signout');
-            console.log(`Signout ho gaya`);
+            message.success(response.data.message, 2);
             if (response.data.success) {
+                localStorage.removeItem("auth");
                 localStorage.removeItem("userId");
-                localStorage.setItem("loggedIn", false); message.success(response.data.success, 2, () => {
-                    window.location.href = "/login";
-                });
+                localStorage.setItem("loggedIn", false); message.success(response.data.message, 2);
+                setAuth({
+                    ...auth,
+                    user: null,
+                    token: ''
+                })
+                setInterval(() => {
+                    navigate('/login')
+                }, 500)
             }
         } catch (error) {
-            console.error("Signout failed:", error);
+            console.log(error.response.data.message);
+            message.error(error.response.data.message, 3);
         }
     };
 
@@ -65,6 +61,7 @@ export const AccountProvider = ({ children }) => {
             console.error(error);
         }
     }
+
     const loginCheck = () => {
         if (localStorage.getItem("loggedIn") === "false") {
             return false;
@@ -74,7 +71,7 @@ export const AccountProvider = ({ children }) => {
     }
 
     return (
-        <AccountContext.Provider value={{ handleSignup, handleSignout, handleLogin, loginCheck, handleUserActivity }}>
+        <AccountContext.Provider value={{ handleSignout, loginCheck, handleUserActivity }}>
             {children}
         </AccountContext.Provider >
     );

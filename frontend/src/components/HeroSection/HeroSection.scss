@@ -16,6 +16,16 @@
     gap: 25px;
     text-align: left;
 
+    .btn-h {
+      display: flex;
+      gap: 12px;
+
+      button {
+        width: 200px;
+        height: 40px;
+      }
+    }
+
     h1 {
       color: var(--Black, #000);
       font-size: 64px;
@@ -33,7 +43,7 @@
       padding: 12px;
     }
 
-    .dis{
+    .dis {
       display: none;
     }
   }
@@ -133,11 +143,9 @@
 @media screen and (max-width: 680px) {
   .hero-container {
     .hero-section-text {
-      p{
+      p {
         width: 90%;
       }
-      }
     }
-  
-  
+  }
 }

@@ -17,8 +17,9 @@ function NewRecipe() {
           Share Your <span className="text-primary">Recipes</span>
         </h1>
         <p className="text-black font-24">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-          vitae enim pharetra, venenatis nunc eget, finibus est. Proin velit{" "}
+          Discover delicious and inspiring recipes from all over the world. 
+          Whether you're looking for vibrant salads, hearty soups, or decadent desserts, 
+          find the perfect dish to satisfy your cravings and bring joy to your table.
         </p>
         <button className="btn-primary-medium bg-primary cursor">
           <Link className="text-white links-fix" to="/add-recipe">

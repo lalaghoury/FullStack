@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./RecipeForm.scss";
-import { Form, Input, Upload, Button, Select, Space, Checkbox, InputNumber, Flex } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
+import { Form, Input, Upload, Button, Select, Space, Checkbox, InputNumber, Flex, Divider } from "antd";
+import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import { useAddRecipe } from "../../context/AddRecipeContext";
 import { useFunctions } from "../../context/FunctionsSupply";
+let index = 0;
+
 function RecipeForm() {
   const { onFinish, uploadButton, beforeUpload, handleUpload, recipe_imageurl, showImage, setShowImage, form } = useAddRecipe();
 
@@ -19,8 +21,24 @@ function RecipeForm() {
       setCategories(categories);
     };
     fetchCategories();
-  }, []);
-  console.log(categories);
+  }, [getAllCategories]);
+
+  const [items, setItems] = useState(['New Collection', 'My Recipes', 'My Cookbook']);
+  const [name, setName] = useState('');
+  const [showAddCollection, setShowAddCollection] = useState(false);
+  const inputRef = useRef(null);
+  const onNameChange = (event) => {
+    setName(event.target.value);
+  };
+  const addItem = (e) => {
+    e.preventDefault();
+    setItems([...items, name || `New item ${index++}`]);
+    setName('');
+    setShowAddCollection(false)
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
+  };
   return (
     <div>
       <Form
@@ -56,12 +74,13 @@ function RecipeForm() {
         </Form.Item>
 
         {/*Input For Recipe Image Upload */}
-        <Form.Item label="Upload Image" name="recipe_imageurl">
+        <Form.Item label="Upload Image" name="recipe_imageurl" rules={[
+          { required: true, message: "Please add the Recipe Image!" },
+        ]}>
           <Upload
             beforeUpload={beforeUpload}
             onChange={handleUpload}
             showUploadList={false}
-          // name="recipe_imageurl"
           >
             {uploadButton}
           </Upload>
@@ -332,13 +351,14 @@ function RecipeForm() {
         >
           <Select
             placeholder="Select Collection"
-            style={{ width: 200 }}
+            style={{ width: 300 }}
             className="antd-form-input"
-          >
-            <Select.Option value="New Collection">New Collection</Select.Option>
-            <Select.Option value="Cook Book">Cook Book</Select.Option>
-            <Select.Option value="My Recipe">My Recipe</Select.Option>
-          </Select>
+            options={items.map(collection => ({
+              label: collection,
+              value: collection,
+            }))}
+          />
+          {/* </Select> */}
         </Form.Item>
 
         {/*Input For Recipe Show or Not*/}

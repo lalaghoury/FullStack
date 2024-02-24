@@ -2,12 +2,28 @@ import React, { useState } from 'react'
 import './SignUpPage.scss'
 import { Button, Checkbox, Divider, Form, Input, message } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom';
-import { useAccount } from '../../context/AccountContext';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function SignUpPage() {
+    const navigate = useNavigate();
     const [form] = Form.useForm();
-    const { handleSignup } = useAccount();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const handleSignup = async (values) => {
+        setIsSubmitting(true);
+        try {
+            const response = await axios.post('http://localhost:5000/signup', values);
+            const data = response.data;
+            if (data.success) {
+                message.success(data.message, 1, () => {
+                    navigate('/login');
+                });
+            }
+        } catch (error) {
+            message.error(error.response.data.message, 3);
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <div className='signup-page'>
@@ -21,7 +37,17 @@ function SignUpPage() {
                     form={form}
                     layout="vertical"
                     size='medium'
-                    onFinish={handleSignup}>
+                    onFinish={handleSignup}
+                >
+                    {/* Full Name Field */}
+                    <Form.Item
+                        label="Full Name"
+                        name="fullname"
+                        rules={[{ required: true, message: 'Please input your full name!' }]}
+                    >
+                        <Input className='small-input' allowClear placeholder="Enter Full Name" />
+                    </Form.Item>
+                    <Divider className='small-divider' />
                     {/*  Username Field */}
                     <Form.Item
                         label="Username"
@@ -36,30 +62,33 @@ function SignUpPage() {
                         label="Email"
                         name="email"
                         rules={[
-                            { type: 'email', required: true, message: 'Please input your email!' },
                             {
-                                validator: (_, value) => {
+                                required: true,
+                                message: 'Please input your email!'
+                            },
+                            () => ({
+                                validator(_, value) {
                                     if (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
                                         return Promise.reject(new Error('The input is not a valid email!'));
                                     }
                                     return Promise.resolve();
                                 },
-                            },
+                            }),
                         ]}
+                        validateTrigger="onBlur"
                     >
                         <Input
                             className='small-input'
                             allowClear
                             placeholder="Enter Email"
-                            onBlur={() => form.validateFields(['email'])}
                             suffix={
-                                form.getFieldValue('email') ? (
-                                    form.getFieldError('email') ? (
+                                !form.isFieldTouched('email') || !form.getFieldError('email').length ? null : (
+                                    form.getFieldError('email').length ? (
                                         <CloseCircleOutlined style={{ color: 'red' }} />
                                     ) : (
                                         <CheckCircleOutlined style={{ color: 'green' }} />
                                     )
-                                ) : null
+                                )
                             }
                         />
                     </Form.Item>
@@ -68,7 +97,34 @@ function SignUpPage() {
                     <Form.Item
                         label="Password"
                         name="password"
-                        rules={[{ required: true, message: 'Please input your password!' }]}
+                        hasFeedback
+                        rules={[
+                            { required: true, message: 'Please input your password!' },
+                            {
+                                validator: (_, value) => {
+                                    if (!value) {
+                                        return Promise.reject(new Error('Please input your password!'));
+                                    }
+                                    if (value.length < 8) {
+                                        return Promise.reject(new Error('Password must be at least 8 characters long!'));
+                                    }
+                                    if (!/[A-Z]/.test(value)) {
+                                        return Promise.reject(new Error('Password must contain at least one uppercase letter!'));
+                                    }
+                                    if (!/[a-z]/.test(value)) {
+                                        return Promise.reject(new Error('Password must contain at least one lowercase letter!'));
+                                    }
+                                    if (!/[0-9]/.test(value)) {
+                                        return Promise.reject(new Error('Password must contain at least one number!'));
+                                    }
+                                    if (!/[!@#\$%\^&\*]/.test(value)) {
+                                        return Promise.reject(new Error('Password must contain at least one special character (e.g. !@#$%^&*)!'));
+                                    }
+                                    return Promise.resolve();
+                                },
+                            },
+                        ]}
+                        validateTrigger="onBlur"
                     >
                         <Input.Password placeholder="Enter Password" className='small-input' style={{ width: '100%' }} allowClear />
                     </Form.Item>
@@ -90,27 +146,33 @@ function SignUpPage() {
                                 },
                             }),
                         ]}
+                        validateTrigger="onBlur"
                     >
                         <Input.Password placeholder="Confirm Password" className='small-input' style={{ width: '100%' }} allowClear />
                     </Form.Item>
                     <Divider className='small-divider' />
+                    {/* Terms and Conditions Checkbox */}
+                    <Form.Item
+                        name="agreement"
+                        valuePropName="checked"
+                        rules={[
+                            { validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('You must agree to the terms and conditions!')) },
+                        ]}
+                        validateTrigger="onBlur"
+                    >
+                        <Checkbox>
+                            I agree to the <Link to="/terms-and-conditions">terms and conditions</Link>
+                        </Checkbox>
+                    </Form.Item>
+                    <Divider className='small-divider' />
+                    {/* Submit Button */}
                     <Form.Item>
-                        {/* Terms and Conditions Checkbox */}
-                        <Form.Item
-                            name="agreement"
-                            valuePropName="checked"
-                            rules={[
-                                { validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('You must agree to the terms and conditions!')) },
-                            ]}
+                        <Button
+                            className='text-white bold bg-primary cursor disable-hover'
+                            htmlType="submit"
+                            disabled={isSubmitting}
                         >
-                            <Checkbox>
-                                I agree to the <Link to="/terms-and-conditions">terms and conditions</Link>
-                            </Checkbox>
-                        </Form.Item>
-                        <Divider className='small-divider' />
-                        {/* Submit Button */}
-                        <Button className='text-white bold bg-primary cursor disable-hover' htmlType="submit" >
-                            Sign Up
+                            {isSubmitting ? 'Submitting...' : 'Sign Up'}
                         </Button>
                     </Form.Item>
                 </Form>

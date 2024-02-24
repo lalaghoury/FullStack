@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const verifyUser = require("../middlewares/verifyUser");
+const { requireSignin } = require("../middlewares/authMiddleware");
 
-router.get("/", verifyUser, (req, res) => {
-  res.json({ success: "Successfully verified user.", username: req.user.username });
+router.get("/", requireSignin, (req, res) => {
+  res.status(200).send({ ok: true });
 });
 
 module.exports = router;

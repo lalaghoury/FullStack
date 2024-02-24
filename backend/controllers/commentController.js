@@ -1,6 +1,6 @@
 const Comment = require("../model/Comment");
 const BlogModel = require("../schemas/BlogSchema");
-const recipeSchema = require("../schemas/RecipeSchema");
+const RecipeModel = require("../schemas/RecipeSchema");
 
 const populateReplies = async (comment) => {
   try {
@@ -20,18 +20,19 @@ const populateReplies = async (comment) => {
 
 const commentController = {
   createComment: async (req, res) => {
-    const { postId, author, content, model } = req.body;
+    const { relatedTo, author, content, model, onModel } = req.body;
     const newComment = new Comment({
-      postId,
+      relatedTo,
       author,
       content,
+      onModel,
     });
 
-    const Model = model === "BlogSchema" ? BlogModel : recipeSchema;
-    
-    try {
+    const Model = onModel === "Recipe" ? RecipeModel : BlogModel;
+
+    try { 
       const savedComment = await newComment.save();
-      await Model.findByIdAndUpdate(postId, {
+      await Model.findByIdAndUpdate(relatedTo, {
         $push: { comments: savedComment._id },
       });
 
@@ -43,7 +44,7 @@ const commentController = {
 
   getCommentsByPostId: async (req, res) => {
     try {
-      let comments = await Comment.find({ postId: req.params.postId });
+      let comments = await Comment.find({ relatedTo: req.params.postId });
       for (const comment of comments) {
         await populateReplies(comment);
       }
@@ -124,6 +125,17 @@ const commentController = {
 
       // Delete all replies of the comment using $in operator
       await Comment.deleteMany({ _id: { $in: comment.replies } });
+
+      //Delete the Comment referrence from model
+      if (comment.onModel === "Recipe") {
+        await RecipeModel.findByIdAndUpdate(comment.relatedTo, {
+          $pull: { comments: comment._id },
+        });
+      } else if (comment.onModel === "Blog") {
+        await BlogModel.findByIdAndUpdate(comment.relatedTo, {
+          $pull: { comments: comment._id },
+        });
+      }
 
       // Delete the comment itself
       await Comment.findByIdAndDelete(req.params.id);

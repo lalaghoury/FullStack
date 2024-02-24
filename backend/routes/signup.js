@@ -7,10 +7,21 @@ const userModel = require("../schemas/UserSchema");
 router.post("/", async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    // Check if the user already exists
-    const existingUser = await userModel.findOne({ email });
+    // Check if the user already exists by email or username
+    const existingUser = await userModel.findOne({
+      $or: [{ email }, { username }],
+    });
     if (existingUser) {
-      return res.status(400).json({ error: "User already exists" });
+      if (existingUser.email === email) {
+        return res
+          .status(400)
+          .json({ message: "Email already exists", success: false });
+      }
+      if (existingUser.username === username) {
+        return res
+          .status(400)
+          .json({ message: "Username already exists", success: false });
+      }
     }
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -21,13 +32,18 @@ router.post("/", async (req, res) => {
       password: hashedPassword,
     });
     res.status(201).json({
-      success: "User created successfully",
+      success: true,
+      username: newUser.username,
       email: newUser.email,
-      password: newUser.password,
+      message: "Account created successfully",
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("Signup error:", error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+      error,
+    });
   }
 });
 

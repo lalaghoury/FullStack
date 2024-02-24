@@ -4,72 +4,57 @@ import "./comments.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
+import { useFunctions } from "../../context/FunctionsSupply";
+import { useAuth } from "../../context/AuthContext";
 
 const Comments = ({ comments, onUpdateComments, used }) => {
+    const { timePassed } = useFunctions();
     const [showInput, setShowInput] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [commentBody, setCommentBody] = useState("");
-    const userId = localStorage.getItem("userId");
+    const { auth } = useAuth()
+    const userId = auth.user._id;
 
-    const handleReply = (commentId) => {
-        setShowInput(true);
-        let newComment = {
-            content: commentBody,
-            author: userId,
-            model: used,
-        };
-        console.log(newComment);
-        axios
-            .post(`http://localhost:5000/comments/${commentId}/reply`, newComment)
-            .then((response) => {
-                onUpdateComments(); // Fetch updated comments after replying
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        setCommentBody("");
-    };
-
-    const handleDelete = (commentId) => {
-        axios
-            .delete(`http://localhost:5000/comments/${commentId}`)
-            .then((response) => {
-                onUpdateComments(); // Fetch updated comments after deletion
-            });
-    };
-
-    const handleUpdate = (commentId) => {
-        axios
-            .put(`http://localhost:5000/comments/${commentId}`, { content: commentBody, updatedAt: new Date() })
-            .then((response) => {
-                onUpdateComments(); // Fetch updated comments after update
-            });
-    }
-
-    const timePassed = (createdAt) => {
-        const now = new Date();
-        const created = new Date(createdAt);
-        const seconds = Math.round((now - created) / 1000);
-        const minutes = Math.round(seconds / 60);
-        const hours = Math.round(minutes / 60);
-        const days = Math.round(hours / 24);
-
-        if (seconds < 60) {
-            return `${seconds} seconds ago`;
-        } else if (minutes < 60) {
-            return `${minutes} minutes ago`;
-        } else if (hours < 24) {
-            return `${hours} hours ago`;
-        } else {
-            return `${days} days ago`;
+    const handleReply = async (commentId) => {
+        try {
+            const newComment = {
+                content: commentBody,
+                author: userId,
+                model: used,
+            };
+            await axios.post(`http://localhost:5000/comments/${commentId}/reply`, newComment);
+            onUpdateComments();
+            setCommentBody("");
+        } catch (error) {
+            console.error("Error replying to comment:", error);
         }
     };
+
+    const handleDelete = async (commentId) => {
+        try {
+            await axios.delete(`http://localhost:5000/comments/${commentId}`);
+            onUpdateComments(); // Fetch updated comments after deletion
+        } catch (error) {
+            console.error("Error deleting comment:", error);
+            // Handle error here
+        }
+    };
+
+    const handleUpdate = async (commentId) => {
+        try {
+            await axios.put(`http://localhost:5000/comments/${commentId}`, { content: commentBody, updatedAt: new Date() });
+            onUpdateComments(); // Fetch updated comments after update
+        } catch (error) {
+            console.error("Error updating comment:", error);
+            // Handle error here
+        }
+    }
 
     return (
         <div>
             <div className={`${comments.content && "comment-container"}`}>
                 <div style={{ display: 'flex', gap: 10 }}>
-                    <span><img src={comments.author.userimage} alt="" /></span>
+                    <span><img src={comments.author.userimage} alt="img" style={{ width: 40, borderRadius: '50%' }} /></span>
                     <span style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                         <span style={{ display: 'flex', gap: 10, alignSelf: "flex-start" }}>
                             <span style={{ fontWeight: '600' }}>
@@ -104,7 +89,6 @@ const Comments = ({ comments, onUpdateComments, used }) => {
                                 style={{ width: '100%', padding: 20 }}
                             />
                         )}
-
                         {showInput && (
                             <div>
                                 <Button
@@ -145,7 +129,6 @@ const Comments = ({ comments, onUpdateComments, used }) => {
                                 <Button className="button" onClick={() => setShowInput(true)}>
                                     Reply
                                 </Button>
-
                                 {comments.author._id === userId && (
                                     <Button className="button" onClick={() => {
                                         setShowEdit(true);
@@ -155,7 +138,6 @@ const Comments = ({ comments, onUpdateComments, used }) => {
                                     </Button>
                                 )}
                                 {comments.author._id === userId && (
-
                                     <Button
                                         className="button"
                                         onClick={() => handleDelete(comments._id)}
@@ -163,14 +145,10 @@ const Comments = ({ comments, onUpdateComments, used }) => {
                                         Delete
                                     </Button>
                                 )}
-
-
                             </div>
                         )}
-
                     </span>
                 </div>
-
             </div>
             <div style={{ paddingLeft: 30 }}>
                 {comments?.replies?.map((comment) => (

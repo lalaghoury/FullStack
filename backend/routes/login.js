@@ -11,20 +11,30 @@ router.post("/", async (req, res) => {
     const { email, password } = req.body;
     const user = await userModel.findOne({ email });
     if (!user) {
-      return res.status(401).json({ error: "User not found" });
+      return res
+        .status(401)
+        .json({ message: "User not found", success: false });
     }
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      return res.status(401).json({ error: "Invalid password" });
+      return res
+        .status(401)
+        .json({ message: "Invalid password", success: false });
     }
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY);
     res.cookie("token", token, { httpOnly: true });
     res.json({
-      success: "Login successful",
-      msg: `after token`,
-      username: user.username,
-      userId: user._id,
-      token: token,
+      success: true,
+      message: "Login Successful",
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        saves: user.saves,
+        userimage: user.userimage,
+        newsletter: user.newsletter,
+      },
+      token,
     });
   } catch (error) {
     console.error(error);

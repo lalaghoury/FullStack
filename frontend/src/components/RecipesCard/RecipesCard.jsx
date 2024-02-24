@@ -1,34 +1,61 @@
 import React, { useEffect, useState, useCallback } from "react";
 import "./RecipesCard.scss";
 import { FireOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Rate } from "antd";
 import WishlistButton from "./WishlistButton";
 import { useFunctions } from "../../context/FunctionsSupply";
 
-function RecipesCard({ slice }) {
+function RecipesCard({ slice, userShow, data, query }) {
   const { getAllRecipes } = useFunctions();
   const [allRecipes, setAllRecipes] = useState([]);
   const [cardRatings, setCardRatings] = useState({});
+  const navigate = useNavigate();
   const desc = ['Terrible', 'Bad', 'Normal', 'Good', 'Wonderful'];
-  console.log(slice)
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const collectionName = searchParams.get('collection');
+
+  const fetchRecipes = useCallback(async () => {
+    try {
+      let data = await getAllRecipes();
+      if (collectionName) {
+        data = data.filter(recipe => recipe.recipe_collection === collectionName);
+      }
+      setAllRecipes(data);
+      const initialRatings = data.reduce((ratings, recipe) => {
+        ratings[recipe._id] = recipe.recipe_ratings || 0;
+        return ratings;
+      }, {});
+      setCardRatings(initialRatings);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [getAllRecipes, collectionName]);
 
   useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const data = await getAllRecipes();
-        setAllRecipes(data);
-        const initialRatings = data.reduce((ratings, recipe) => {
-          ratings[recipe._id] = recipe.recipe_ratings || 0;
-          return ratings;
-        }, {});
-        setCardRatings(initialRatings);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     fetchRecipes();
-  }, [getAllRecipes]);
+  }, [fetchRecipes]);
+
+  const onAction = () => {
+    fetchRecipes();
+  }
+
+  const highlightMatch = (title, query) => {
+    if (!query) return title;
+    const parts = title.split(new RegExp(`(${query})`, 'gi'));
+    return (
+      <>
+        {parts.map((part, index) =>
+          part.toLowerCase() === query.toLowerCase() ? (
+            <span key={index} className="highlight">{part}</span>
+          ) : (
+            part
+          )
+        )}
+      </>
+    );
+  };
 
   const handleRatingChange = useCallback((value, recipeId) => {
     if (Number.isInteger(value) && value >= 0 && value <= desc.length) {
@@ -38,17 +65,60 @@ function RecipesCard({ slice }) {
     }
   }, [desc.length]);
 
-  return (
-    <div className="card-wrapper">
-      {slice !== 0 ? (
-        <>
-          {allRecipes.slice(0, slice).map((recipe) => (
-            <div key={recipe._id} className="card">
+  if (data) {
+    return (
+      <div className="card-wrapper">
+        {
+          data && data.map((recipe) => (
+            <div className="card" key={recipe._id}>
               <div className="card-parent">
-                <div className="card-parent-img">
+                <div className="card-parent-img" onClick={() => navigate(`/recipe/${recipe._id}`)}>
                   <img src={recipe.recipe_imageurl} alt={recipe.recipe_title} className="card-image" />
                 </div>
-                <WishlistButton />
+                <WishlistButton saves={recipe.saves} recipeId={recipe._id} onAction={onAction} />
+                <div className="card-rating">
+                  <Rate
+                    style={{ fontSize: 22, color: "#B55D51" }}
+                    tooltips={desc}
+                    onChange={(value) => handleRatingChange(value, recipe._id)}
+                    value={cardRatings[recipe._id] || 0}
+                  />
+                </div>
+              </div>
+              <h3 className="font-16">
+                <Link className="links-fix text-black" to={`/recipe/${recipe._id}`}>
+                  {highlightMatch(recipe.recipe_title, query)}
+                </Link>
+              </h3>
+              {userShow && <div className="card-user" >
+                <span className="card-left">
+                  <img src={recipe.user.userimage} alt={recipe.user.username} />
+                  <h4><Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>{recipe.user.username}</Link></h4>
+                </span>
+                <span className="card-right">
+                  <FireOutlined style={{ color: "red" }} />
+                  <h4>{recipe.firecount}</h4>
+                </span>
+              </div>}
+            </div>
+          ))
+        }
+      </div>)
+  }
+
+
+
+  return (
+    <div className="card-wrapper">
+      {slice && slice !== 0 ? (
+        <>
+          {allRecipes.slice(0, slice).map((recipe) => (
+            <div className="card">
+              <div className="card-parent">
+                <div className="card-parent-img" onClick={() => navigate(`/recipe/${recipe._id}`)}>
+                  <img src={recipe.recipe_imageurl} alt={recipe.recipe_title} className="card-image" />
+                </div>
+                <WishlistButton saves={recipe.saves} recipeId={recipe._id} onAction={onAction} />
                 <div className="card-rating">
                   <Rate
                     style={{ fontSize: 22, color: "#B55D51" }}
@@ -61,7 +131,7 @@ function RecipesCard({ slice }) {
               <h3 className="font-16">
                 <Link className="links-fix text-black" to={`/recipe/${recipe._id}`}>{recipe.recipe_title}</Link>
               </h3>
-              <div className="card-user">
+              {userShow && <div className="card-user" >
                 <span className="card-left">
                   <img src={recipe.user.userimage} alt={recipe.user.username} />
                   <h4><Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>{recipe.user.username}</Link></h4>
@@ -70,19 +140,19 @@ function RecipesCard({ slice }) {
                   <FireOutlined style={{ color: "red" }} />
                   <h4>{recipe.firecount}</h4>
                 </span>
-              </div>
+              </div>}
             </div>
           ))}
         </>
       ) : (
         <>
           {allRecipes.map((recipe) => (
-            <div key={recipe._id} className="card">
+            <div className="card" key={recipe._id}>
               <div className="card-parent">
-                <div className="card-parent-img">
+                <div className="card-parent-img" onClick={() => navigate(`/recipe/${recipe._id}`)}>
                   <img src={recipe.recipe_imageurl} alt={recipe.recipe_title} className="card-image" />
                 </div>
-                <WishlistButton />
+                <WishlistButton saves={recipe.saves} recipeId={recipe._id} onAction={onAction} />
                 <div className="card-rating">
                   <Rate
                     style={{ fontSize: 22, color: "#B55D51" }}
@@ -95,7 +165,7 @@ function RecipesCard({ slice }) {
               <h3 className="font-16">
                 <Link className="links-fix text-black" to={`/recipe/${recipe._id}`}>{recipe.recipe_title}</Link>
               </h3>
-              <div className="card-user">
+              {userShow && <div className="card-user" >
                 <span className="card-left">
                   <img src={recipe.user.userimage} alt={recipe.user.username} />
                   <h4><Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>{recipe.user.username}</Link></h4>
@@ -104,7 +174,7 @@ function RecipesCard({ slice }) {
                   <FireOutlined style={{ color: "red" }} />
                   <h4>{recipe.firecount}</h4>
                 </span>
-              </div>
+              </div>}
             </div>
           ))}
         </>

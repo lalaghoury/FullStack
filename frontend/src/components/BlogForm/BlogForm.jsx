@@ -34,7 +34,6 @@ function BlogForm() {
             <Form
                 form={form}
                 scrollToFirstError={true}
-                // initialValues={{}}
                 onFinish={onFinishBlog}
                 layout="vertical"
                 className="recipe-form"
@@ -58,7 +57,9 @@ function BlogForm() {
                 </Form.Item>
 
                 {/*Input For Recipe Image Upload */}
-                <Form.Item label="BLog Image" name="image">
+                <Form.Item label="BLog Image" name="image" rules={[
+                    { required: true, message: "Please Upload the Blog Image!" },
+                ]}>
                     <Upload
                         beforeUpload={beforeUpload}
                         onChange={handleUpload}

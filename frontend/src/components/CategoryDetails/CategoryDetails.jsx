@@ -4,7 +4,6 @@ import { Link, useParams } from 'react-router-dom';
 import { useFunctions } from '../../context/FunctionsSupply';
 import { FireOutlined } from '@ant-design/icons';
 import { Breadcrumb, Divider, Rate, Select } from 'antd';
-import WishlistButton from '../RecipesCard/WishlistButton';
 
 function CategoryDetails() {
     const { category_id } = useParams();
@@ -105,7 +104,6 @@ function CategoryDetails() {
                                 <div className="card-parent-img">
                                     <img src={recipe.recipe_imageurl} alt={recipe.recipe_title} className="card-image" />
                                 </div>
-                                <WishlistButton />
                                 <div className="card-rating">
                                     <Rate
                                         style={{ fontSize: 22, color: "#B55D51" }}

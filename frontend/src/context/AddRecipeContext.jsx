@@ -2,6 +2,8 @@ import { createContext, useContext, useState } from "react";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form, message } from "antd";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 const AddRecipeContext = createContext();
 
@@ -10,6 +12,8 @@ export const AddRecipeProvider = ({ children }) => {
   const [recipe_imageurl, setRecipe_imageurl] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [showImage, setShowImage] = useState(false);
+  const navigate = useNavigate();
+  const { auth } = useAuth();
 
   const [form] = Form.useForm();
 
@@ -60,28 +64,36 @@ export const AddRecipeProvider = ({ children }) => {
   };
 
   const onFinish = async (values) => {
-    const userId = localStorage.getItem("userId");
-    console.log(values.category)
     try {
       const response = await axios.post(
-        "http://localhost:5000/recipe", { ...values, recipe_imageurl, user: [userId] });
+        "http://localhost:5000/recipe", { ...values, recipe_imageurl });
       console.log("Server response:", response.data);
+      if (response.data.success) {
+        message.success(response.data.message);
+        form.resetFields();
+        setShowImage(false)
+        setRecipe_imageurl('')
+        setTimeout(() => {
+          navigate(`/recipe/${response.data.newRecipe._id}`);
+        }, 1000)
+      }
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.log(error.response.data.message);
+      message.error(error.response.data.message, 3);
     }
   };
 
   const onFinishBlog = async (values) => {
-    const userId = localStorage.getItem("userId");
+    const userId = auth.user._id;
     if (!userId) {
-      console.error("User ID is not available");
+      console.error("Please Login To Create a Blog");
       return;
     }
     if (!recipe_imageurl) {
       console.error("Image URL is not set");
       return;
     }
-    if (!category) {
+    if (!values.category) {
       console.error("Category is not set");
       return;
     }
@@ -90,10 +102,26 @@ export const AddRecipeProvider = ({ children }) => {
         "http://localhost:5000/blog", { ...values, user: [userId], image: recipe_imageurl }
       );
       console.log("Server response:", response.data);
+      if (response.data.success) {
+        message.success(response.data.message);
+        form.resetFields();
+        setShowImage(false)
+        setRecipe_imageurl('')
+        setTimeout(() => {
+          navigate(`/blog/${response.data.savedPost._id}`);
+        }, 1000)
+      }
     } catch (error) {
-      console.error("Error submitting blog:", error);
+      console.log(error.response.data.message);
+      message.error(error.response.data.message, 3);
     }
   };
+
+  const handleCancel = () => {
+    form.resetFields();
+    setShowImage(false);
+  }
+
 
   const uploadButton = (
     <div style={{ textAlign: "center" }}>
@@ -106,7 +134,7 @@ export const AddRecipeProvider = ({ children }) => {
 
   return (
     <AddRecipeContext.Provider
-      value={{ uploadButton, onFinishBlog, handleImageChange, beforeUpload, handleUpload, showImage, setRecipe_imageurl, recipe_imageurl, setShowImage, onFinish, form }}
+      value={{ uploadButton, onFinishBlog, handleImageChange, beforeUpload, handleUpload, showImage, setRecipe_imageurl, recipe_imageurl, setShowImage, onFinish, form, handleCancel }}
     >
       {children}
     </AddRecipeContext.Provider>
@@ -120,3 +148,4 @@ export const useAddRecipe = () => {
   }
   return context;
 };
+

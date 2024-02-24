@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
-const UserModel = require('../schemas/UserSchema');
-require('dotenv').config();
+const jwt = require("jsonwebtoken");
+const UserModel = require("../schemas/UserSchema");
+require("dotenv").config();
 
 const verifyUser = async (req, res, next) => {
   const token = req.cookies.token;

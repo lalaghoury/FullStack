@@ -1,15 +1,44 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './LogInPage.scss'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Divider, Form, Input, message } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { useAccount } from '../../context/AccountContext';
+import { useAuth } from '../../context/AuthContext';
 
 function LogInPage() {
     axios.defaults.withCredentials = true;
-    const { handleLogin } = useAccount();
     const [form] = Form.useForm();
+    const navigate = useNavigate();
+    const { auth, setAuth } = useAuth();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleLogin = async (values) => {
+        setIsSubmitting(true);
+        try {
+            const response = await axios.post('http://localhost:5000/login', values);
+            const data = response.data;
+            if (data.success) {
+                localStorage.setItem("loggedIn", true);
+                message.success(data.message, 2);
+                setAuth((previousAuth) => ({
+                    ...previousAuth,
+                    user: data.user,
+                    token: data.token,
+                }));
+                localStorage.setItem("auth", JSON.stringify({
+                    ...auth,
+                    user: data.user,
+                    token: data.token
+                }));
+                navigate("/");
+            }
+        } catch (error) {
+            console.log(error.response.data.message);
+            message.error(error.response.data.message, 3);
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <div className='login-page'>
@@ -31,6 +60,7 @@ function LogInPage() {
                             { type: 'email', required: true, message: 'Please input your email!' },
 
                         ]}
+                        validateTrigger="onBlur"
                     >
                         <Input
                             className='small-input'
@@ -58,6 +88,7 @@ function LogInPage() {
                             { required: true, message: 'Please input your password!' },
 
                         ]}
+                        validateTrigger="onBlur"
                     >
                         <Input
                             className='small-input'
@@ -76,10 +107,14 @@ function LogInPage() {
                         />
                     </Form.Item>
                     <Divider className='small-divider' />
-                    {/* Submit Button */}
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit" className='login-button bold text-white bg-primary disable-hover'>
-                            Log in
+                  {/* Submit Button */}
+                  <Form.Item>
+                        <Button
+                            className='text-white bold bg-primary cursor disable-hover'
+                            htmlType="submit"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Submitting...' : 'Log In'}
                         </Button>
                     </Form.Item>
                 </Form>

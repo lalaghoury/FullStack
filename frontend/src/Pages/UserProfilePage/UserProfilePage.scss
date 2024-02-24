@@ -25,15 +25,21 @@
         rotate: 330deg;
         margin-bottom: 160px;
         margin-right: 90px;
+
         img {
           width: 65px;
           height: 55px;
         }
       }
 
-      img {
+      .rounded {
         width: 135px;
         height: 140px;
+        object-fit: cover;
+        object-position: center;
+        border: 1px solid rgba(0, 0, 0, 0.171);
+        border-radius: 50%;
+        overflow: hidden;
       }
     }
 
@@ -118,33 +124,33 @@
     }
   }
 
-  .user-newsletter{
+  .user-newsletter {
     display: flex;
     flex-direction: column;
     gap: 20px;
     margin-bottom: 50px;
 
-    span{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    .user-newsletter-buttons{
+    .user-newsletter-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 0;
+      gap: 15px;
+      width: 30%;
+
+      .user-btn {
+        width: 100px;
+        padding: 20px 12px !important;
+        text-align: center;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 15px 0;
-        gap: 15px;
-        width: 30%;
-
-        .user-btn{
-            width: 100px;
-            padding: 20px 12px !important;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        justify-content: center;
+      }
     }
   }
 }

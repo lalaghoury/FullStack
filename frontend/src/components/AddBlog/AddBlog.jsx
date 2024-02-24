@@ -8,6 +8,7 @@ function AddBlog() {
             <div className="add-blog-heading">
                 <h1>Create new BLog</h1>
                 <Link to="/test" className="btn bg-primary text-white links-fix ">
+                    <i className="fas fa-arrow-left"></i>
                     Next
                 </Link>
             </div>

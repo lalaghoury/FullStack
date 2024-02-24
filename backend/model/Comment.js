@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema({
-  postId: {
+  relatedTo: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Blog",
+    refPath: "onModel",
+  },
+  onModel: {
+    type: String,
+    enum: ["Blog", "Recipe"],
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,

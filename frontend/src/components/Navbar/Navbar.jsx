@@ -8,9 +8,20 @@ import { useAuth } from '../../context/AuthContext';
 import './Navbar.scss';
 
 const Navbar = () => {
-    const { handleSignout } = useAccount()
-    const { auth, } = useAuth();
+    const { handleSignout } = useAccount();
+    const { auth } = useAuth();
     const navigate = useNavigate();
+
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const handleLogout = () => {
+        handleSignout();
+        setTimeout(() => navigate('/login'), 500);
+    };
 
     const items = [
         {
@@ -25,7 +36,11 @@ const Navbar = () => {
             type: 'divider',
         },
         {
-            label: <Button onClick={() => { handleSignout(); setTimeout(() => navigate('/login'), 500) }} className="disable-hover text-white bold bg-primary">Logout</Button>,
+            label: (
+                <Button onClick={handleLogout} className="disable-hover text-white bold bg-primary">
+                    Logout
+                </Button>
+            ),
             key: '3',
         },
     ];
@@ -77,11 +92,20 @@ const Navbar = () => {
                 </div>
             )}
 
-            <div className="nav-hamburger">
-                <div className="nav-hamburger">
-                    <MenuOutlined style={{ fontSize: '24px' }} />
-                </div>
-            </div>
+            {isDropdownOpen ? (
+                <>
+                    <div className="nav-dropdown">
+                        <Dropdown
+                            menu={{
+                                items,
+                            }}
+                            trigger={['click']}
+                        >
+                        </Dropdown>
+                    </div>
+                </>) : <div className="nav-hamburger" onClick={toggleDropdown}>
+                <MenuOutlined style={{ fontSize: '24px' }} />
+            </div>}
         </nav>
     );
 };

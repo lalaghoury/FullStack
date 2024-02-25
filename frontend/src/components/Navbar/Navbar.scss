@@ -16,9 +16,24 @@
     transition: all 0.5s ease-in-out;
   }
 
-  .search-icon:hover{
+  .search-icon:hover {
     scale: 1.05;
     transition: all 0.3s ease-in-out;
-
   }
+}
+
+.nav-dropdown {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: brown;
+  z-index: 999;
 }

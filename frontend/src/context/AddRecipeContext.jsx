@@ -8,6 +8,7 @@ import { useAuth } from "./AuthContext";
 const AddRecipeContext = createContext();
 
 export const AddRecipeProvider = ({ children }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [recipe_imageurl, setRecipe_imageurl] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -53,7 +54,6 @@ export const AddRecipeProvider = ({ children }) => {
         "http://localhost:5000/image",
         formData
       );
-      console.log(response.data.url);
       setLoading(false);
       setShowImage(true);
 
@@ -64,6 +64,7 @@ export const AddRecipeProvider = ({ children }) => {
   };
 
   const onFinish = async (values) => {
+    setIsSubmitting(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/recipe", { ...values, recipe_imageurl });
@@ -76,10 +77,12 @@ export const AddRecipeProvider = ({ children }) => {
         setTimeout(() => {
           navigate(`/recipe/${response.data.newRecipe._id}`);
         }, 1000)
+        setIsSubmitting(false);
       }
     } catch (error) {
       console.log(error.response.data.message);
       message.error(error.response.data.message, 3);
+      setIsSubmitting(false);
     }
   };
 
@@ -134,7 +137,7 @@ export const AddRecipeProvider = ({ children }) => {
 
   return (
     <AddRecipeContext.Provider
-      value={{ uploadButton, onFinishBlog, handleImageChange, beforeUpload, handleUpload, showImage, setRecipe_imageurl, recipe_imageurl, setShowImage, onFinish, form, handleCancel }}
+      value={{ isSubmitting, setIsSubmitting, uploadButton, onFinishBlog, handleImageChange, beforeUpload, handleUpload, showImage, setRecipe_imageurl, recipe_imageurl, setShowImage, onFinish, form, handleCancel }}
     >
       {children}
     </AddRecipeContext.Provider>

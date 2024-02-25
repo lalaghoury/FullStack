@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Blog.scss";
-import { Link, useNavigate } from "react-router-dom";
-import { Breadcrumb, Card, Divider } from "antd";
-import { useFunctions } from "../../context/FunctionsSupply";
+import { Link } from "react-router-dom";
+import { Breadcrumb } from "antd";
 import AppLayout from "../../Layout/Layout";
 import BlogCard from "../BlogCard/BlogCard";
 
@@ -18,6 +17,12 @@ const BlogHeading = () => (
   <div className="common-heading">
     <h1 className="text-black font-48">Blog</h1>
     <ViewMoreLink />
+  </div>
+)
+
+const BlogHeading2 = () => (
+  <div className="common-heading">
+    <h1 className="text-black font-48">Blog</h1>
   </div>
 )
 
@@ -44,21 +49,6 @@ const BlogBreadcrumb = () => (
 )
 
 function Blog({ slice }) {
-  const { getAllBlogs } = useFunctions();
-  const [allBlogs, setAllBlogs] = useState([]);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    getAllBlogs()
-      .then(setAllBlogs)
-      .catch(setError);
-  }, [getAllBlogs]);
-
-  if (error) {
-    return <div>Error fetching blogs: {error.message}</div>;
-  }
-
   return (
     <AppLayout>
       <BlogHeading />
@@ -69,5 +59,6 @@ function Blog({ slice }) {
   );
 }
 
-export { Blog, BlogHeading, BlogBreadcrumb };
+<ViewMoreLink />
+export { Blog, BlogHeading, BlogHeading2, BlogBreadcrumb };
 

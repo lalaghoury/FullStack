@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import "./StayInTouch.scss";
 import { useAuth } from "../../context/AuthContext";
 import { Button, Form, Input, message } from "antd";
 import axios from "axios";
+import AppLayout from "../../Layout/Layout";
 
 function StayInTouch({ userId }) {
   const { auth, setAuth } = useAuth();
@@ -28,7 +29,7 @@ function StayInTouch({ userId }) {
     }
   };
   return (
-    <>
+    <AppLayout>
       {
         auth?.user?.newsletter ? null : <div className="stay-in-touch-container">
           <h1 className="font-48">Let’s Stay In Touch!</h1>
@@ -57,7 +58,7 @@ function StayInTouch({ userId }) {
           </Form>
         </div >
       }
-    </>
+    </AppLayout>
   );
 }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import './BlogPage.scss'
-import { BlogBreadcrumb, BlogHeading } from '../../components/Blog/Blog'
+import { BlogBreadcrumb, BlogHeading2 } from '../../components/Blog/Blog'
 import AppLayout from '../../Layout/Layout'
 import BlogCard from '../../components/BlogCard/BlogCard'
 function BlogPage() {
@@ -9,7 +9,7 @@ function BlogPage() {
             <div className="blog-page">
                 <div className="blog-page-heading">
                     <BlogBreadcrumb />
-                    <BlogHeading />
+                    <BlogHeading2 />
                 </div>
                 <div className="blog-page-body">
                     <BlogCard />

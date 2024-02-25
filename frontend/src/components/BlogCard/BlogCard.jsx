@@ -41,13 +41,13 @@ const BlogCard = ({ slice }) => {
             ) : (
                 <>
                     {allBlogs && allBlogs.map((blog) => (
-                        <Card key={blog._id} className="blog-card" hoverable onClick={() => navigate(`/blog/${blog._id}`)}>
+                        <Card key={blog._id} bodyStyle={{ padding: 5 }} className="blog-card" hoverable onClick={() => navigate(`/blog/${blog._id}`)}>
                             <div className="blog-card-img">
                                 <img src={blog.image} alt={blog.title} />
                             </div>
                             <Card.Meta
                                 title={
-                                    <Link className="links-fix text-black" to={`/blog/${blog._id}`}>
+                                    <Link className="links-fix text-black" to={`/blog/${blog._id}`} >
                                         {blog.title}
                                     </Link>
                                 }

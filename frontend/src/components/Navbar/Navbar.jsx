@@ -40,9 +40,9 @@ const Navbar = () => {
                 <Link className="text-black links-fix" to="/recipe">
                     Recipe
                 </Link>
-                <Link className="text-black links-fix" to="/add-recipe">
+                {auth.user && <Link className="text-black links-fix" to="/add-recipe">
                     Add Recipe
-                </Link>
+                </Link>}
                 <Link className="text-black links-fix" to="/blog">
                     Blog
                 </Link>

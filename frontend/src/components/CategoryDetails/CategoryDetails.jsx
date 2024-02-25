@@ -48,9 +48,7 @@ function CategoryDetails() {
 
     if (loading) return <h1>Loading...</h1>;
 
-    if (!category) {
-        return <h1>Category not found</h1>;
-    }
+    if (!category) return <h1>Category not found</h1>;
 
     return (
         <AppLayout>

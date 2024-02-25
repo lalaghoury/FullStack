@@ -7,6 +7,7 @@ import { FireOutlined } from '@ant-design/icons';
 import { Breadcrumb, Button, Empty, Rate } from 'antd';
 import { useAuth } from '../../context/AuthContext';
 import AppLayout from '../../Layout/Layout';
+import RecipesCard from '../../components/RecipesCard/RecipesCard';
 
 const MyRecipesPage = () => {
     const { getUser } = useFunctions();
@@ -43,8 +44,6 @@ const MyRecipesPage = () => {
         }
     }, [desc.length]);
 
-    console.log(user);
-
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -74,7 +73,11 @@ const MyRecipesPage = () => {
                     />
                 </div>
                 <h1>{user.username.charAt(0).toUpperCase() + user.username.slice(1)}'s Recipes</h1>
-                <div className="card-wrapper">
+
+                <div>
+                    <RecipesCard data={user.recipes} userShow={true} />
+                </div>
+                {/* <div className="card-wrapper">
                     {user.recipes && user.recipes.length > 0 ? (
                         user.recipes.map((recipe) => (
                             <div key={recipe._id} className="card">
@@ -129,7 +132,7 @@ const MyRecipesPage = () => {
                             </div>
                         </div>
                     )}
-                </div>
+                </div> */}
             </div>
         </AppLayout>
     );

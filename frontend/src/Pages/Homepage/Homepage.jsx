@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Herosection from "../../components/HeroSection/Herosection";
 import "./HomePage.scss";
 import NewRecipe from "../../components/NewRecipe/NewRecipe";

@@ -1,5 +1,5 @@
-.comment-container{
-    margin: 20px;
+.comment-container {
+    margin: 10px 0 10px 0;
     padding: 10px;
     background-color: #fff;
     border-left: 4px solid #6F1EB2;
@@ -8,13 +8,13 @@
     width: 100%;
 }
 
-.comment-container h3{
-   font-weight: 500;
-   font-size: 1.1rem;
-   padding-left: 5px;
+.comment-container h3 {
+    font-weight: 500;
+    font-size: 1.1rem;
+    padding-left: 5px;
 }
 
-.comment-container .button{
+.comment-container .button {
     background-color: #F1F3FD;
     color: #111;
     border: 1px solid #6F1EB2;
@@ -28,13 +28,13 @@
     font-size: 0.6rem;
 }
 
-.comment-container .input{
-  padding: 5px;
-  border: 1px solid #6F1EB2;
-  border-radius: 4px;
-  margin: 5px;
+.comment-container .input {
+    padding: 5px;
+    border: 1px solid #6F1EB2;
+    border-radius: 4px;
+    margin: 5px;
 }
 
-.comment-container input:focus{
+.comment-container input:focus {
     outline: none;
 }

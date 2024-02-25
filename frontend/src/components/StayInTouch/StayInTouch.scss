@@ -2,7 +2,7 @@
   width: 100%;
   height: 400px;
   background: var(--Light, #fff0ed);
-  padding: 50px 120px;
+  margin: 50px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,8 +24,6 @@
     align-items: center;
     justify-content: center;
     gap: 24px;
-    max-width: 1440px;
-    margin: 0 auto;
 
     .email-input {
       width: 500px;
@@ -39,7 +37,7 @@
 
 @media screen and (max-width: 1200px) {
   .stay-in-touch-container {
-    padding: 10px 32px;
+    padding: 10px 0;
 
     p {
       text-align: center;

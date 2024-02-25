@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./RecipeForm.scss";
 import { Form, Input, Upload, Button, Select, Space, Checkbox, InputNumber, Flex, Divider } from "antd";
-import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import { useAddRecipe } from "../../context/AddRecipeContext";
 import { useFunctions } from "../../context/FunctionsSupply";
-let index = 0;
+import { useNavigate } from "react-router-dom";
 
 function RecipeForm() {
-  const { onFinish, uploadButton, beforeUpload, handleUpload, recipe_imageurl, showImage, setShowImage, form } = useAddRecipe();
-
+  const { onFinish, uploadButton, beforeUpload, handleUpload, recipe_imageurl, showImage, setShowImage, form, isSubmitting } = useAddRecipe();
+  const navigate = useNavigate();
   const handleCancel = () => {
     form.resetFields();
     setShowImage(false);
+    navigate(-1)
   }
   const { getAllCategories } = useFunctions();
   const [categories, setCategories] = React.useState([]);
@@ -23,22 +24,7 @@ function RecipeForm() {
     fetchCategories();
   }, [getAllCategories]);
 
-  const [items, setItems] = useState(['New Collection', 'My Recipes', 'My Cookbook']);
-  const [name, setName] = useState('');
-  const [showAddCollection, setShowAddCollection] = useState(false);
-  const inputRef = useRef(null);
-  const onNameChange = (event) => {
-    setName(event.target.value);
-  };
-  const addItem = (e) => {
-    e.preventDefault();
-    setItems([...items, name || `New item ${index++}`]);
-    setName('');
-    setShowAddCollection(false)
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 0);
-  };
+  const [items] = useState(['New Collection', 'My Recipes', 'My Cookbook']);
   return (
     <div>
       <Form
@@ -375,8 +361,12 @@ function RecipeForm() {
 
           {/* Submit Button */}
           <Form.Item wrapperCol={{ offset: 6, span: 14 }}>
-            <Button className="bg-primary text-white bold disable-hover" htmlType="submit">
-              Submit
+            <Button
+              className='text-white bold bg-primary cursor disable-hover'
+              htmlType="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Add Recipe'}
             </Button>
           </Form.Item>
 

@@ -93,7 +93,11 @@ function RecipesCard({ slice, userShow, data, query }) {
               {userShow && <div className="card-user" >
                 <span className="card-left">
                   <img src={recipe.user.userimage} alt={recipe.user.username} />
-                  <h4><Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>{recipe.user.username}</Link></h4>
+                  <h4><Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>
+                    <center>
+                      {recipe.user.username.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
+                    </center>
+                  </Link></h4>
                 </span>
                 <span className="card-right">
                   <FireOutlined style={{ color: "red" }} />
@@ -106,14 +110,12 @@ function RecipesCard({ slice, userShow, data, query }) {
       </div>)
   }
 
-
-
   return (
     <div className="card-wrapper">
       {slice && slice !== 0 ? (
         <>
           {allRecipes.slice(0, slice).map((recipe) => (
-            <div className="card">
+            <div className="card" key={recipe._id}>
               <div className="card-parent">
                 <div className="card-parent-img" onClick={() => navigate(`/recipe/${recipe._id}`)}>
                   <img src={recipe.recipe_imageurl} alt={recipe.recipe_title} className="card-image" />
@@ -134,7 +136,8 @@ function RecipesCard({ slice, userShow, data, query }) {
               {userShow && <div className="card-user" >
                 <span className="card-left">
                   <img src={recipe.user.userimage} alt={recipe.user.username} />
-                  <h4><Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>{recipe.user.username}</Link></h4>
+                  <h4><Link className="links-fix text-black" to={`/user/${recipe.user._id}`}><center>{recipe.user.username.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}</center>
+                  </Link></h4>
                 </span>
                 <span className="card-right">
                   <FireOutlined style={{ color: "red" }} />
@@ -168,7 +171,11 @@ function RecipesCard({ slice, userShow, data, query }) {
               {userShow && <div className="card-user" >
                 <span className="card-left">
                   <img src={recipe.user.userimage} alt={recipe.user.username} />
-                  <h4><Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>{recipe.user.username}</Link></h4>
+                  <h4><Link className="links-fix text-black" to={`/user/${recipe.user._id}`}>
+                    <center>
+                      {recipe.user.username.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
+                    </center>
+                  </Link></h4>
                 </span>
                 <span className="card-right">
                   <FireOutlined style={{ color: "red" }} />

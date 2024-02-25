@@ -1,9 +1,11 @@
 import React from "react";
 import "./NewRecipe.scss";
-import { Link } from "react-router-dom";
 import AppLayout from "../../Layout/Layout";
+import { Button } from "antd";
+import { useNavigate } from "react-router-dom";
 
 function NewRecipe() {
+  const navigate = useNavigate();
   return (
     <AppLayout>
       <div className="new-recipe">
@@ -23,11 +25,11 @@ function NewRecipe() {
             Whether you're looking for vibrant salads, hearty soups, or decadent desserts,
             find the perfect dish to satisfy your cravings and bring joy to your table.
           </p>
-          <button className="btn-primary-medium bg-primary cursor">
-            <Link className="text-white links-fix" to="/add-recipe">
-              Create New Recipe
-            </Link>
-          </button>
+          <Button
+            className="disable-hover bold"
+            onClick={() => navigate('/add-recipe')} style={{ width: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 25 }}>
+            Create New Recipe
+          </Button>
         </div>
       </div>
     </AppLayout>

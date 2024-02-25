@@ -155,7 +155,7 @@ html,
 }
 
 .links-fix:hover {
-  color: #313030;
+  color: var(--Primary, rgba(181, 93, 81, 0.97));
   /* transition: 0.3s; */
   scale: 1.02;
 }

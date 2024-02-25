@@ -2,13 +2,11 @@ import React, { createContext, useContext } from "react";
 import { message } from "antd";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const AccountContext = createContext();
 
 export const AccountProvider = ({ children }) => {
     const { auth, setAuth } = useAuth();
-    const navigate = useNavigate();
 
     const handleSignout = async () => {
         try {
@@ -23,9 +21,6 @@ export const AccountProvider = ({ children }) => {
                     user: null,
                     token: ''
                 })
-                // setInterval(() => {
-                //     navigate('/login')
-                // }, 500)
             }
         } catch (error) {
             console.log(error.response.data.message);
@@ -39,27 +34,17 @@ export const AccountProvider = ({ children }) => {
                 axios.defaults.headers.common["Authorization"] = `Bearer ${auth?.token}`;
                 const response = await axios.get("http://localhost:5000/verify");
                 if (response.data.success) {
-                    console.log(`User is verified`);
-                    const formattedUsername = response.data.username.charAt(0).toUpperCase() + response.data.username.slice(1);
-                    return formattedUsername;
+                    const formattedUsername = auth.user.username.charAt(0).toUpperCase() + auth.user.username.slice(1);
+                    message.success(`Welcome Dear , ` + formattedUsername);
                 }
             } catch (error) {
-                console.log(`User not verified`);
                 console.error(error);
             }
         }
     }
 
-    const loginCheck = () => {
-        if (localStorage.getItem("loggedIn") === "false") {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     return (
-        <AccountContext.Provider value={{ handleSignout, loginCheck, handleUserActivity }}>
+        <AccountContext.Provider value={{ handleSignout, handleUserActivity }}>
             {children}
         </AccountContext.Provider >
     );

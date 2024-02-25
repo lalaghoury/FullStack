@@ -20,7 +20,13 @@ const userController = {
   getUserById: async (req, res) => {
     try {
       const user = await UserModel.findById(req.params.id)
-        .populate("recipes")
+        .populate({
+          path: "recipes",
+          populate: {
+            path: "user",
+            select: "username userimage",
+          },
+        })
         .populate("blogs");
       res.status(200).json(user);
     } catch (error) {

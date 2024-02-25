@@ -20,7 +20,7 @@ function EditRecipe() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      axios.get("http://localhost:5000/category/names")
+      axios.get("https://mushy-jade-sundress.cyclic.app/category/names")
         .then((response) => {
           setCategories(response.data);
           console.log(response.data);
@@ -49,7 +49,7 @@ function EditRecipe() {
         title: 'Are you sure you want to update this recipe?',
         content: 'If you proceed, the changes you have made will be saved.',
         onOk: async () => {
-          const response = await axios.put(`http://localhost:5000/recipe/${recipe_id}`, { ...values, recipe_imageurl: recipe_imageurl });
+          const response = await axios.put(`https://mushy-jade-sundress.cyclic.app/recipe/${recipe_id}`, { ...values, recipe_imageurl: recipe_imageurl });
           if (response.data.success) {
             form.resetFields();
             message.success("Recipe Updated Successfully", 2);
@@ -69,7 +69,7 @@ function EditRecipe() {
         title: 'Are you sure you want to delete this recipe?',
         content: 'This action cannot be undone.',
         onOk: async () => {
-          const response = await axios.delete(`http://localhost:5000/recipe/${recipe_id}`);
+          const response = await axios.delete(`https://mushy-jade-sundress.cyclic.app/recipe/${recipe_id}`);
           if (response.data.success) {
             console.log(`Recipe Deleted Successfull`, response.data.deletedRecipe);
             message.success("Recipe Deleted Successfully", 2);

@@ -10,7 +10,7 @@ export const AccountProvider = ({ children }) => {
 
     const handleSignout = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/signout');
+            const response = await axios.get('https://mushy-jade-sundress.cyclic.app/signout');
             if (response.data.success) {
                 localStorage.removeItem("auth");
                 localStorage.removeItem("userId");
@@ -32,7 +32,7 @@ export const AccountProvider = ({ children }) => {
         if (auth?.user) {
             try {
                 axios.defaults.headers.common["Authorization"] = `Bearer ${auth?.token}`;
-                const response = await axios.get("http://localhost:5000/verify");
+                const response = await axios.get("https://mushy-jade-sundress.cyclic.app/verify");
                 if (response.data.success) {
                     const formattedUsername = auth.user.username.charAt(0).toUpperCase() + auth.user.username.slice(1);
                     message.success(`Welcome Dear , ` + formattedUsername);

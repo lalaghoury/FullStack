@@ -10,7 +10,7 @@ async function checkAuthorship(auth, type, id) {
         return false;
     }
     axios.defaults.headers.common['Authorization'] = `Bearer ${auth.token}`;
-    const response = await axios.get(`http://localhost:5000/${type}/${id}/authorship`);
+    const response = await axios.get(`https://mushy-jade-sundress.cyclic.app/${type}/${id}/authorship`);
     return response.data.author;
 }
 

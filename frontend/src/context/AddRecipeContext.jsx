@@ -51,7 +51,7 @@ export const AddRecipeProvider = ({ children }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/image",
+        "https://mushy-jade-sundress.cyclic.app/image",
         formData
       );
       setLoading(false);
@@ -67,7 +67,7 @@ export const AddRecipeProvider = ({ children }) => {
     setIsSubmitting(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/recipe", { ...values, recipe_imageurl });
+        "https://mushy-jade-sundress.cyclic.app/recipe", { ...values, recipe_imageurl });
       console.log("Server response:", response.data);
       if (response.data.success) {
         message.success(response.data.message);
@@ -102,7 +102,7 @@ export const AddRecipeProvider = ({ children }) => {
     }
     try {
       const response = await axios.post(
-        "http://localhost:5000/blog", { ...values, user: [userId], image: recipe_imageurl }
+        "https://mushy-jade-sundress.cyclic.app/blog", { ...values, user: [userId], image: recipe_imageurl }
       );
       console.log("Server response:", response.data);
       if (response.data.success) {

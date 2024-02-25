@@ -16,7 +16,7 @@ const CommentsSection = ({ Id, used }) => {
         try {
             setLoading(true);
             const response = await axios.get(
-                `http://localhost:5000/comments/${Id}`
+                `https://mushy-jade-sundress.cyclic.app/comments/${Id}`
             );
             setComments(response.data.reverse());
         } catch (error) {
@@ -43,7 +43,7 @@ const CommentsSection = ({ Id, used }) => {
             model: used,
         };
         axios
-            .post("http://localhost:5000/comments", newComment)
+            .post("https://mushy-jade-sundress.cyclic.app/comments", newComment)
             .then((response) => {
                 setCommentBody(""); // Clear input after successful addition
                 onUpdateComments(); // Fetch data again to update comments

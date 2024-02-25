@@ -10,7 +10,7 @@ function Footer() {
   const { auth, setAuth } = useAuth();
   const handleNewsletterAction = async (values) => {
     try {
-      const response = await axios.post("http://localhost:5000/newsletter/subscribe", { email: values.email, userId: auth.user._id });
+      const response = await axios.post("https://mushy-jade-sundress.cyclic.app/newsletter/subscribe", { email: values.email, userId: auth.user._id });
       const data = response.data;
       if (data.success) {
         message.success(data.message);

@@ -65,7 +65,7 @@ function UserProfilePage() {
 
     const handleUnsubscribe = async () => {
         try {
-            const response = await axios.post("http://localhost:5000/newsletter/unsubscribe");
+            const response = await axios.post("https://mushy-jade-sundress.cyclic.app/newsletter/unsubscribe");
             const data = response.data;
             if (data.success) {
                 message.success(data.message);
@@ -115,7 +115,7 @@ function UserProfilePage() {
 
     const handleUserCredentialsUpdate = async () => {
         try {
-            const response = await axios.put(`http://localhost:5000/user/${user_id}`, { username, email, bio, fullname });
+            const response = await axios.put(`https://mushy-jade-sundress.cyclic.app/user/${user_id}`, { username, email, bio, fullname });
             if (response.data.success) {
                 console.log(`User Updated Successfully`, response.data.user);
                 setAuth(previousAuth => ({ ...previousAuth, user: response.data.user }));
@@ -130,7 +130,7 @@ function UserProfilePage() {
 
     const handleUserImageChange = async () => {
         try {
-            const response = await axios.put(`http://localhost:5000/user/${user_id}`, { userbigimage: recipe_imageurl, userimage: recipe_imageurl });
+            const response = await axios.put(`https://mushy-jade-sundress.cyclic.app/user/${user_id}`, { userbigimage: recipe_imageurl, userimage: recipe_imageurl });
             if (response.data.success) {
                 console.log(`Recipe Image Changed Successfully`, response.data.user);
                 setAuth(previousAuth => ({ ...previousAuth, user: response.data.user }));
@@ -149,7 +149,7 @@ function UserProfilePage() {
     const handleFollowChange = async (Id, action) => {
         const endpoint = action === 'follow' ? 'follow' : 'unfollow';
         try {
-            const response = await axios.put(`http://localhost:5000/user/${user_id}/${endpoint}`, { Id });
+            const response = await axios.put(`https://mushy-jade-sundress.cyclic.app/user/${user_id}/${endpoint}`, { Id });
             if (response.data.success) {
                 message.success(response.data.message);
                 setAlreadyFollowing(response.data.following);

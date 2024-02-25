@@ -9,7 +9,7 @@ function StayInTouch({ userId }) {
   const { auth, setAuth } = useAuth();
   const handleNewsletterAction = async (values) => {
     try {
-      const response = await axios.post("http://localhost:5000/newsletter/subscribe", { email: values.email, userId });
+      const response = await axios.post("https://mushy-jade-sundress.cyclic.app/newsletter/subscribe", { email: values.email, userId });
       console.log(response)
       const data = response.data;
       console.log(data)

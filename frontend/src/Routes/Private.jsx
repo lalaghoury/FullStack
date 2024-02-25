@@ -16,7 +16,7 @@ export default function PrivateRoute({ Component, ...props }) {
                 try {
                     setLoading(true)
                     axios.defaults.headers.common['Authorization'] = `Bearer ${auth.token}`;
-                    const response = await axios.get('http://localhost:5000/verify');
+                    const response = await axios.get('https://mushy-jade-sundress.cyclic.app/verify');
                     setOk(response.data.ok);
                     setLoading(false)
                 } catch (error) {

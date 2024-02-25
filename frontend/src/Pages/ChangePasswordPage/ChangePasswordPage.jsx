@@ -20,7 +20,7 @@ function ChangePasswordPage() {
             onOk() {
                 return new Promise(async (resolve, reject) => {
                     try {
-                        const response = await axios.put(`http://localhost:5000/user/${user_id}/change-password`, values);
+                        const response = await axios.put(`https://mushy-jade-sundress.cyclic.app/user/${user_id}/change-password`, values);
                         if (response.data.success) {
                             handleSignout();
                             message.success('Password changed successfully. Redirecting to login...', 2);

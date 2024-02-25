@@ -22,7 +22,7 @@ const Comments = ({ comments, onUpdateComments, used }) => {
                 author: userId,
                 model: used,
             };
-            await axios.post(`http://localhost:5000/comments/${commentId}/reply`, newComment);
+            await axios.post(`https://mushy-jade-sundress.cyclic.app/comments/${commentId}/reply`, newComment);
             onUpdateComments();
             setCommentBody("");
         } catch (error) {
@@ -32,7 +32,7 @@ const Comments = ({ comments, onUpdateComments, used }) => {
 
     const handleDelete = async (commentId) => {
         try {
-            await axios.delete(`http://localhost:5000/comments/${commentId}`);
+            await axios.delete(`https://mushy-jade-sundress.cyclic.app/comments/${commentId}`);
             onUpdateComments(); // Fetch updated comments after deletion
         } catch (error) {
             console.error("Error deleting comment:", error);
@@ -42,7 +42,7 @@ const Comments = ({ comments, onUpdateComments, used }) => {
 
     const handleUpdate = async (commentId) => {
         try {
-            await axios.put(`http://localhost:5000/comments/${commentId}`, { content: commentBody, updatedAt: new Date() });
+            await axios.put(`https://mushy-jade-sundress.cyclic.app/comments/${commentId}`, { content: commentBody, updatedAt: new Date() });
             onUpdateComments(); // Fetch updated comments after update
         } catch (error) {
             console.error("Error updating comment:", error);

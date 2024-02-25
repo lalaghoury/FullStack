@@ -16,7 +16,7 @@ function LogInPage() {
     const handleLogin = async (values) => {
         setIsSubmitting(true);
         try {
-            const response = await axios.post('http://localhost:5000/login', values);
+            const response = await axios.post('https://mushy-jade-sundress.cyclic.app/login', values);
             const data = response.data;
             if (data.success) {
                 localStorage.setItem("loggedIn", true);
@@ -107,8 +107,8 @@ function LogInPage() {
                         />
                     </Form.Item>
                     <Divider className='small-divider' />
-                  {/* Submit Button */}
-                  <Form.Item>
+                    {/* Submit Button */}
+                    <Form.Item>
                         <Button
                             className='text-white bold bg-primary cursor disable-hover'
                             htmlType="submit"

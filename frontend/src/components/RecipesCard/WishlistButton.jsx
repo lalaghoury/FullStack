@@ -33,7 +33,7 @@ const WishlistButton = ({ saves, recipeId, onAction }) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${auth.token}`;
 
         try {
-            const endpoint = `http://localhost:5000/user/${action}/${auth.user._id}/${recipeId}`;
+            const endpoint = `https://mushy-jade-sundress.cyclic.app/user/${action}/${auth.user._id}/${recipeId}`;
             console.log(endpoint);
             console.log(recipeId);
             const response = await axios.post(endpoint);

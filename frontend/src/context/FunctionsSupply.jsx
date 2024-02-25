@@ -7,7 +7,7 @@ export const FunctionSupplyProvider = ({ children }) => {
 
     const getAllRecipes = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/recipe');
+            const response = await axios.get('https://mushy-jade-sundress.cyclic.app/recipe');
             const allRecipes = response.data;
             return allRecipes;
         } catch (error) {
@@ -18,7 +18,7 @@ export const FunctionSupplyProvider = ({ children }) => {
 
     const getSingleRecipe = async (recipe_id) => {
         try {
-            const response = await axios.get(`http://localhost:5000/recipe/${recipe_id}`);
+            const response = await axios.get(`https://mushy-jade-sundress.cyclic.app/recipe/${recipe_id}`);
             const recipe = response.data.recipe;
             return recipe;
         } catch (error) {
@@ -28,7 +28,7 @@ export const FunctionSupplyProvider = ({ children }) => {
 
     const getAllCategories = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/category');
+            const response = await axios.get('https://mushy-jade-sundress.cyclic.app/category');
             const allCategories = response.data;
             return allCategories;
         } catch (error) {
@@ -38,7 +38,7 @@ export const FunctionSupplyProvider = ({ children }) => {
 
     const getUser = async (userId) => {
         try {
-            const response = await axios.get(`http://localhost:5000/user/${userId}`);
+            const response = await axios.get(`https://mushy-jade-sundress.cyclic.app/user/${userId}`);
             const user = response.data;
             return user;
         } catch (error) {
@@ -48,7 +48,7 @@ export const FunctionSupplyProvider = ({ children }) => {
 
     const getSingleCategory = async (category_id) => {
         try {
-            const response = await axios.get(`http://localhost:5000/category/${category_id}`);
+            const response = await axios.get(`https://mushy-jade-sundress.cyclic.app/category/${category_id}`);
             const category = response.data;
             return category;
         } catch (error) {
@@ -58,7 +58,7 @@ export const FunctionSupplyProvider = ({ children }) => {
 
     const getAllBlogs = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/blog');
+            const response = await axios.get('https://mushy-jade-sundress.cyclic.app/blog');
             const allBlogs = response.data;
             return allBlogs;
         } catch (error) {
@@ -69,7 +69,7 @@ export const FunctionSupplyProvider = ({ children }) => {
 
     const getSingleBlog = async (blog_id) => {
         try {
-            const response = await axios.get(`http://localhost:5000/blog/${blog_id}`);
+            const response = await axios.get(`https://mushy-jade-sundress.cyclic.app/blog/${blog_id}`);
             const blog = response.data;
             return blog;
         } catch (error) {

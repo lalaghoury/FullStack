@@ -67,7 +67,7 @@ function EditBlog() {
 
     const updateBlog = async (values) => {
         try {
-            const response = await axios.put(`http://localhost:5000/blog/${blog_id}`, { ...values, image: recipe_imageurl });
+            const response = await axios.put(`https://mushy-jade-sundress.cyclic.app/blog/${blog_id}`, { ...values, image: recipe_imageurl });
             if (response.data.success) {
                 message.success("Blog Updated Successfully", 2);
                 navigate(-1);
@@ -79,7 +79,7 @@ function EditBlog() {
     }
     const deleteBlog = async () => {
         try {
-            const response = await axios.delete(`http://localhost:5000/blog/${blog_id}`);
+            const response = await axios.delete(`https://mushy-jade-sundress.cyclic.app/blog/${blog_id}`);
             if (response.data.success) {
                 message.success("Blog Deleted Successfully", 2);
                 setRecipe_imageurl('');

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../Logo/Logo';
 import { useAccount } from '../../context/AccountContext';
-import { DownOutlined, SearchOutlined } from '@ant-design/icons';
+import { DownOutlined, SearchOutlined, MenuOutlined } from '@ant-design/icons';
 import { Dropdown, Space, Button, Input } from 'antd';
 import { useAuth } from '../../context/AuthContext';
 import './Navbar.scss';
@@ -79,17 +79,7 @@ const Navbar = () => {
 
             <div className="nav-hamburger">
                 <div className="nav-hamburger">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="24"
-                        viewBox="0 0 32 24"
-                        fill="none"
-                    >
-                        <rect width="32" height="3" rx="1.5" fill="black" />
-                        <rect y="8.23535" width="32" height="3" rx="1.5" fill="black" />
-                        <rect y="16.4707" width="32" height="3" rx="1.5" fill="black" />
-                    </svg>
+                    <MenuOutlined style={{ fontSize: '24px' }} />
                 </div>
             </div>
         </nav>

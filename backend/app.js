@@ -84,10 +84,9 @@ app.get("/test", (req, res) => {
 });
 
 ///////////////////////////////////////////////////////////////////////////////
-
+const db = require("./model/db");
+  db(); // Connect to database
 // Listen
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  const db = require("./model/db");
-  db(); // Connect to database
 });

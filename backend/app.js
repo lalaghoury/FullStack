@@ -3,6 +3,16 @@ const app = express();
 require("dotenv").config();
 const PORT = process.env.PORT || 8000;
 
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
+
 // Middlewares
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,23 +81,19 @@ app.use("/comments", commentsRouter);
 
 // Newsletter Route
 const newsletterRouter = require("./routes/newsletter");
-const {
-  sendEmailWithTransporter,
-  transporter,
-  mailOptions,
-} = require("./config/nodemailerConfig");
 app.use("/newsletter", newsletterRouter);
 
 // test
 app.get("/test", (req, res) => {
-  sendEmailWithTransporter(transporter, mailOptions);
+  res.status(200).send("helloo world test");
 });
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // Listen
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  const db = require("./model/db");
-  db(); // Connect to database
+
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 });

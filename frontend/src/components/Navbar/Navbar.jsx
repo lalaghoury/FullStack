@@ -79,7 +79,7 @@ const Navbar = () => {
 
             <div className="nav-hamburger">
                 <div className="nav-hamburger">
-                    <MenuOutlined style={{ fontSize: '24px' }} />
+                    <MenuOutlined style={{ fontSize: '24px' }} /> 
                 </div>
             </div>
         </nav>

@@ -83,15 +83,14 @@ app.use("/comments", commentsRouter);
 const newsletterRouter = require("./routes/newsletter");
 app.use("/newsletter", newsletterRouter);
 
-// test
-app.get("/test", (req, res) => {
+// Home
+app.get("/", (req, res) => {
   res.status(200).send("helloo world test");
 });
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// Listen
-
+// Connect to database and  Listen
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

@@ -84,11 +84,6 @@ app.use("/comments", commentsRouter);
 const newsletterRouter = require("./routes/newsletter");
 app.use("/newsletter", newsletterRouter);
 
-// Home
-app.get("/", (req, res) => {
-  res.status(200).send("helloo world test");
-});
-
 ///////////////////////////////////////////////////////////////////////////////
 
 // Connect to database and  Listen

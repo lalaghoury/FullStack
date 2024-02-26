@@ -67,18 +67,18 @@ const Navbar = () => {
             justifyContent: "space-between",
           }}
         >
-          <Link to={`/`}>Home</Link>
+          <Link className="text-black links-fix" to={`/`}>Home</Link>
           {auth?.user && <Search />}
         </div>
       ),
       key: "0",
     },
     {
-      label: <Link to="/recipe">Recipes</Link>,
+      label: <Link className="text-black links-fix" to="/recipe">Recipes</Link>,
       key: "1",
     },
     {
-      label: <Link to="/blog">Blogs</Link>,
+      label: <Link className="text-black links-fix" to="/blog">Blogs</Link>,
       key: "2",
     },
     {
@@ -86,8 +86,8 @@ const Navbar = () => {
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           {auth?.user ? (
             <>
-              <Link to={`/user/${auth?.user?._id}`}>My Profile</Link>
-              <Link to="/my-recipes">My Recipes</Link>
+              <Link className="text-black links-fix" to={`/user/${auth?.user?._id}`}>My Profile</Link>
+              <Link className="text-black links-fix" to="/my-recipes">My Recipes</Link>
             </>
           ) : (
             <>

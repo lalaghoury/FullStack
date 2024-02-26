@@ -86,8 +86,12 @@ const Navbar = () => {
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           {auth?.user ? (
             <>
+              <Button className="disable-hover text-white bold">
               <Link className="text-black links-fix" to={`/user/${auth?.user?._id}`}>My Profile</Link>
+              </Button>
+              <Button className="disable-hover-sec text-white bold">
               <Link className="text-black links-fix" to="/my-recipes">My Recipes</Link>
+              </Button>
             </>
           ) : (
             <>
@@ -99,7 +103,7 @@ const Navbar = () => {
               </Button>
               <Button
                 onClick={handleLogin}
-                className="disable-hover text-white bold"
+                className="disable-hover-sec text-white bold"
               >
                 Log in
               </Button>

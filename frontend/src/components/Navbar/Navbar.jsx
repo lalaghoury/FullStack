@@ -68,7 +68,7 @@ const Navbar = () => {
           }}
         >
           <Link className="text-black links-fix" to={`/`}>Home</Link>
-          {auth?.user && <Search />}
+          {auth?.user && <Search onClick={setIsDropdownOpen(true)} />}
         </div>
       ),
       key: "0",

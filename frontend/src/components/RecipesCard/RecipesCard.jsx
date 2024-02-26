@@ -114,7 +114,7 @@ function RecipesCard({ slice, userShow, data, query }) {
     <div className="card-wrapper">
       {slice && slice !== 0 ? (
         <>
-          {allRecipes.slice(0, slice).map((recipe) => (
+          {allRecipes && allRecipes.slice(0, slice).map((recipe) => (
             <div className="card" key={recipe._id}>
               <div className="card-parent">
                 <div className="card-parent-img" onClick={() => navigate(`/recipe/${recipe._id}`)}>
@@ -149,7 +149,7 @@ function RecipesCard({ slice, userShow, data, query }) {
         </>
       ) : (
         <>
-          {allRecipes.map((recipe) => (
+          {allRecipes && allRecipes.map((recipe) => (
             <div className="card" key={recipe._id}>
               <div className="card-parent">
                 <div className="card-parent-img" onClick={() => navigate(`/recipe/${recipe._id}`)}>

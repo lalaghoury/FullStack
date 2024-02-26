@@ -15,14 +15,14 @@ const ViewMoreLink = () => {
 
 const BlogHeading = () => (
   <div className="common-heading">
-    <h1 className="text-black font-48">Blog</h1>
+    <h1 className="text-black font-48">Blogs</h1>
     <ViewMoreLink />
   </div>
 )
 
 const BlogHeading2 = () => (
   <div className="common-heading">
-    <h1 className="text-black font-48">Blog</h1>
+    <h1 className="text-black font-48">Blogs</h1>
   </div>
 )
 
@@ -37,7 +37,7 @@ const BlogBreadcrumb = () => (
           className: "bold",
         },
         {
-          title: "Blog",
+          title: "Blogs",
           href: "/blog",
           className: "bold text-primary",
         },

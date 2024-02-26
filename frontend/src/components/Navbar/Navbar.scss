@@ -34,6 +34,14 @@
   flex-direction: column;
   gap: 20px;
   background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(55px);
   color: brown;
   z-index: 999;
+}
+
+#close{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
 }

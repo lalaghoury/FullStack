@@ -18,7 +18,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const [selectedKey, setSelectedKey] = useState(0);
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -60,6 +60,7 @@ const Navbar = () => {
     {
       label: (
         <div
+          onClick={setSelectedKey(0)}
           style={{
             display: "flex",
             alignItems: "center",
@@ -67,35 +68,63 @@ const Navbar = () => {
             justifyContent: "space-between",
           }}
         >
-          <Link className="text-black links-fix" to={`/`}>Home</Link>
+          <Link className="text-black links-fix" to={`/`}>
+            Home
+          </Link>
           {auth?.user && <Search onClick={setIsDropdownOpen(true)} />}
         </div>
       ),
       key: "0",
     },
     {
-      label: <Link className="text-black links-fix" to="/recipe">Recipes</Link>,
+      label: (
+        <Link
+          onClick={setSelectedKey(1)}
+          className="text-black links-fix"
+          to="/recipe"
+        >
+          Recipes
+        </Link>
+      ),
       key: "1",
     },
     {
-      label: <Link className="text-black links-fix" to="/blog">Blogs</Link>,
+      label: (
+        <Link
+          onClick={setSelectedKey(2)}
+          className="text-black links-fix"
+          to="/blog"
+        >
+          Blogs
+        </Link>
+      ),
       key: "2",
     },
     {
       label: (
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <div
+          onClick={setSelectedKey(3)}
+          style={{ display: "flex", alignItems: "center", gap: "10px" }}
+        >
           {auth?.user ? (
             <>
               <Button className="disable-hover text-white bold">
-              <Link className="text-black links-fix" to={`/user/${auth?.user?._id}`}>My Profile</Link>
+                <Link
+                  className="text-black links-fix"
+                  to={`/user/${auth?.user?._id}`}
+                >
+                  My Profile
+                </Link>
               </Button>
               <Button className="disable-hover-sec text-white bold">
-              <Link className="text-black links-fix" to="/my-recipes">My Recipes</Link>
+                <Link className="text-black links-fix" to="/my-recipes">
+                  My Recipes
+                </Link>
               </Button>
             </>
           ) : (
             <>
-               <Button
+              <Button
                 onClick={handleLogout}
                 className="disable-hover text-white bold"
               >
@@ -179,7 +208,7 @@ const Navbar = () => {
               {/* <Search /> */}
               <Menu
                 mode="vertical"
-                defaultSelectedKeys={["0"]}
+                defaultSelectedKeys={[selectedKey]}
                 items={items2}
                 onClick={toggleDropdown}
               />
